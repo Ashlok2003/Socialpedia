@@ -1,0 +1,36 @@
+### Fetching all the posts
+GET http://localhost:3000/post/getallposts
+
+### Fetching only the user posts
+GET http://localhost:3000/post/getalluserposts/Ashlok2003
+
+
+### Updating the post details
+PATCH  http://localhost:3000/post/updatepost/6598502e3b3e58b13e364874
+Content-Type: application/json
+
+{
+    "title": "Ashlok is the Developer",
+    "description": "This is Sample Description !"
+}
+
+### Removing the post from the database
+DELETE  http://localhost:3000/post/removepost/6598479ae66dbcef32aa9dba
+
+### Adding likes and removing likes if already present....
+PUT http://localhost:3000/post/likes/6598526363dabb56ae91a047
+Content-Type: application/json
+
+{
+    "userId" : "Ashlok2003"
+}
+
+
+### Adding comments 
+POST http://localhost:3000/post/addcomment/6598526363dabb56ae91a047
+Content-Type: application/json
+
+{
+    "userId" : "Ashlok2003",
+    "text" : "This is the sample comment !"
+}

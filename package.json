@@ -4,11 +4,11 @@
   "description": "The Ultimate Social Media Platform",
   "main": "index.js",
   "scripts": {
-    "setup-backend": "cd ./Backend && npm i",
-    "setup-frontend": "cd ./Frontend && npm i",
-    "start-frontend": "cd ./Frontend && npm run dev",
-    "start-backend": "cd ./Backend && node server.js",
-    "start": "npm run setup-backend && npm run setup-frontend && npm run start-backend && npm run start-frontend",
+    "frontend": "cd Frontend && npm install",
+    "backend": "cd Backend && npm install",
+    "frontend-client": "cd Frontend && npm run dev",
+    "backend-server": "cd Backend && node server.js",
+    "start": "npm run backend-server && npm run frontend-client",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ashlok Chaudhary",

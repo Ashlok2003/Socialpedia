@@ -17,6 +17,7 @@ app.use(
       const allowedOrigins = [
         "http://localhost:5173",
         "https://d5vml3-5173.csb.app",
+        "https://d5vml3-8000.csb.app",
         "http://other-allowed-origin",
       ];
 

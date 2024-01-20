@@ -1,26 +1,51 @@
 {
+  // These tasks will run in order when initializing your CodeSandbox project.
   "setupTasks": [
     {
-      "name": "Install Frontend Dependencies",
-      "command": "npm install",
-      "cwd": "Frontend"
+      "name": "Install Dependencies",
+      "command": "npm run frontend"
     },
     {
-      "name": "Install Backend Dependencies",
-      "command": "npm install",
-      "cwd": "Backend"
+      "name": "npm run backend",
+      "command": "npm run backend"
+    },
+    {
+      "command": "npm run frontend-client",
+      "name": "n"
     }
   ],
+
+  // These tasks can be run from CodeSandbox. Running one will open a log in the app.
   "tasks": {
-    "start-frontend": {
-      "name": "Start Frontend",
-      "command": "npm run dev",
-      "cwd": "Frontend"
+    "frontend": {
+      "name": "frontend",
+      "command": "npm run frontend"
     },
-    "start-backend": {
-      "name": "Start Backend",
-      "command": "node server.js",
-      "cwd": "Backend"
+    "backend": {
+      "name": "backend",
+      "command": "npm run backend"
+    },
+    "frontend-client": {
+      "name": "frontend-client",
+      "command": "npm run frontend-client"
+    },
+    "backend-server": {
+      "name": "backend-server",
+      "command": "npm run backend-server"
+    },
+    "test": {
+      "name": "test",
+      "command": "npm run test"
+    },
+    "npm run backend-server && npm run frontend-client": {
+      "name": "npm run backend-server && npm run frontend-client",
+      "command": "npm run backend-server && npm run frontend-client",
+      "runAtStart": true
+    },
+    "npm run start": {
+      "name": "npm run start",
+      "command": "npm run start",
+      "runAtStart": true
     }
   }
 }

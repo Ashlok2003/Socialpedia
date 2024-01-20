@@ -1,31 +1,26 @@
 {
-  // These tasks will run in order when initializing your CodeSandbox project.
   "setupTasks": [
     {
-      "name": "c",
-      "command": "cd ./Backend"
+      "name": "Install Frontend Dependencies",
+      "command": "npm install",
+      "cwd": "Frontend"
     },
     {
-      "name": "Install Dependencies",
-      "command": "npm install"
+      "name": "Install Backend Dependencies",
+      "command": "npm install",
+      "cwd": "Backend"
     }
   ],
-
-  // These tasks can be run from CodeSandbox. Running one will open a log in the app.
   "tasks": {
-    "test": {
-      "name": "test",
-      "command": "npm run test"
+    "start-frontend": {
+      "name": "Start Frontend",
+      "command": "npm run dev",
+      "cwd": "Frontend"
     },
-    "nodemon server.js": {
-      "name": "nodemon server.js",
-      "command": "nodemon server.js",
-      "runAtStart": true
-    },
-    "node server.js": {
-      "name": "node server.js",
+    "start-backend": {
+      "name": "Start Backend",
       "command": "node server.js",
-      "runAtStart": true
+      "cwd": "Backend"
     }
   }
 }

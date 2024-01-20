@@ -5,7 +5,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const PORT = process.env.PORT || 3500;
+const PORT = process.env.PORT || 8000;
 
 app.use(express.json());
 app.use(cookieParser());
@@ -16,6 +16,7 @@ app.use(
     origin: function (origin, callback) {
       const allowedOrigins = [
         "http://localhost:5173",
+        "https://d5vml3-5173.csb.app",
         "http://other-allowed-origin",
       ];
 
@@ -51,7 +52,7 @@ app.use("/", (req, res) => {
   res.send("Hello World !");
 });
 
-const expressServer = app.listen(7000, () => {
+const expressServer = app.listen(PORT, () => {
   console.log("Server is Running on Port ", PORT);
 });
 

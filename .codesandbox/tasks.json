@@ -1,0 +1,31 @@
+{
+  // These tasks will run in order when initializing your CodeSandbox project.
+  "setupTasks": [
+    {
+      "name": "c",
+      "command": "cd  ./Backend"
+    },
+    {
+      "name": "Install Dependencies",
+      "command": "npm install"
+    }
+  ],
+
+  // These tasks can be run from CodeSandbox. Running one will open a log in the app.
+  "tasks": {
+    "test": {
+      "name": "test",
+      "command": "npm run test"
+    },
+    "nodemon server.js": {
+      "name": "nodemon server.js",
+      "command": "nodemon server.js",
+      "runAtStart": true
+    },
+    "node server.js": {
+      "name": "node server.js",
+      "command": "node server.js",
+      "runAtStart": true
+    }
+  }
+}

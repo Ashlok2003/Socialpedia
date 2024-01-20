@@ -3,7 +3,7 @@
   "setupTasks": [
     {
       "name": "c",
-      "command": "cd  ./Backend"
+      "command": "cd ./Backend"
     },
     {
       "name": "Install Dependencies",

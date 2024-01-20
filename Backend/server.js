@@ -51,7 +51,7 @@ app.use("/", (req, res) => {
   res.send("Hello World !");
 });
 
-const expressServer = app.listen(3000, () => {
+const expressServer = app.listen(7000, () => {
   console.log("Server is Running on Port ", PORT);
 });
 

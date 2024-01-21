@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { logOut, setCredentials } from '../Authentication/authSlice';
 
@@ -50,3 +51,13 @@ export const apiSlice = createApi({
     tagTypes: ['POST'],
     endpoints: (builder) => ({})
 })
+=======
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+export const apiSlice = createApi({
+  reducerPath: "api",
+  baseQuery: fetchBaseQuery({ baseUrl: "https://d5vml3-8000.csb.app" }),
+  tagTypes: ["POST"],
+  endpoints: (builder) => ({}),
+});
+>>>>>>> 2bfbf886d8e0cef540741239a5bf03e950e957d2

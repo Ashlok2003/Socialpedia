@@ -1,17 +1,18 @@
 const router = require('express').Router();
+const verifyJWT = require('../../middleware/verifyJWT');
 const { addPost, updatePost, deletePost,
     fetchAllPosts, fetchUserPosts, addComments, handleLike, fetchPostById } = require('../../controllers/Posts/posts.controller');
 //! All Post related operations should handle gracefully.....
 
-router.get('/getallposts', fetchAllPosts);
-router.get('/getPostById/:id', fetchPostById);
-router.get('/getalluserposts/:id', fetchUserPosts);
-router.post('/addnewpost', addPost);
-router.patch('/updatepost/:id', updatePost);
-router.delete('/removepost/:id', deletePost);
+router.get('/getallposts', verifyJWT, fetchAllPosts);
+router.get('/getPostById/:id', verifyJWT, fetchPostById);
+router.get('/getalluserposts/:id', verifyJWT, fetchUserPosts);
+router.post('/addnewpost', verifyJWT, addPost);
+router.patch('/updatepost/:id', verifyJWT, updatePost);
+router.delete('/removepost/:id', verifyJWT, deletePost);
 
-router.put('/likes/:id', handleLike);
-router.post('/addcomment/:id', addComments);
+router.put('/likes/:id', verifyJWT, handleLike);
+router.post('/addcomment/:id', verifyJWT, addComments);
 
 
 module.exports = router;

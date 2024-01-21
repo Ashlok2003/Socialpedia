@@ -5,21 +5,22 @@ import { Container, Row, Col, ButtonGroup, Button, DropdownButton, Dropdown } fr
 import { useSelector } from 'react-redux';
 import { selectPostById, useDeletePostMutation, useAddReactionMutation } from '@/store/Posts/PostSliceRedux';
 import { useNavigate } from 'react-router-dom';
+import { selectCurrentUser } from '../../store/Authentication/authSlice';
 
 function Posts({ postId }) {
-
-    //console.log(postId)
 
     const navigate = useNavigate();
 
     const data = useSelector(state => selectPostById(state, postId));
+    const userData = useSelector(selectCurrentUser);
 
     const [deletePost] = useDeletePostMutation();
     const [addLikeonPost] = useAddReactionMutation();
 
     const addLike = async () => {
         try {
-            await addLikeonPost({ postId, userId: "Ashlok2003" }).unwrap();
+            await addLikeonPost({ postId, userId: userData._id }).unwrap();
+            console.log(postId, userData._id);
         } catch (error) {
             if (error.originalStatus !== 200)
                 console.error('Failed to delete post:', error);
@@ -30,7 +31,7 @@ function Posts({ postId }) {
         if (window.confirm('Are you sure you want to delete this post?')) {
             try {
                 // await dispatch(deletePost({ id: post.id })).unwrap();
-                await deletePost({ id: data._id }).unwrap();
+                await deletePost({ id: data.postId }).unwrap();
             } catch (error) {
                 if (error.originalStatus !== 200)
                     console.error('Failed to delete post:', error);
@@ -74,9 +75,9 @@ function Posts({ postId }) {
 
                 <ButtonGroup className='d-flex align-items-center justify-content-between'>
                     <Button variant='light' onClick={addLike}>
-                        <i className={`${data?.likes.includes("Ashlok2003") ? 'fa-solid fa-thumbs-up' : 'fa-regular fa-thumbs-up'}`}> &nbsp; {data?.likes?.length}</i>
+                        <i className={`${data?.likes.includes(userData._id) ? 'fa-solid fa-thumbs-up' : 'fa-regular fa-thumbs-up'}`}> &nbsp; {data?.likes?.length}</i>
                     </Button>
-                    <Button variant='light' onClick={() => navigate(`/Fullpost/${data?._id}`)}>
+                    <Button variant='light' onClick={() => navigate(`/Fullpost/${data?.postId}`)}>
                         <i className="fa-solid fa-comments"></i>
                     </Button>
                     <Button variant='light'>

@@ -10,9 +10,10 @@ export const store = configureStore({
         posts: postSlice,
         user: userSlice,
         [apiSlice.reducerPath]: apiSlice.reducer,
+        [apiSliceUser.reducerPath]: apiSliceUser.reducer,
         auth: authReducer,
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(apiSlice.middleware),
+        getDefaultMiddleware().concat(apiSlice.middleware).concat(apiSliceUser.middleware),
     devTools: true,
 });

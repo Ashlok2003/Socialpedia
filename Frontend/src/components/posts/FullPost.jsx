@@ -8,13 +8,15 @@ import { useAddCommentMutation, useAddReactionMutation } from '@/store/Posts/Pos
 import { useParams } from 'react-router-dom';
 import { selectPostById } from '../../store/Posts/PostSliceRedux';
 import { useForm } from 'react-hook-form';
+import { selectCurrentUser } from '../../store/Authentication/authSlice';
 
 const FullPost = () => {
 
     const { postId } = useParams();
+
     const data = useSelector(state => selectPostById(state, postId));
 
-    const userData = useSelector(state => state.user.currentUser);
+    const userData = useSelector(selectCurrentUser);
 
     const [addComment] = useAddCommentMutation();
     const dispatch = useDispatch();
@@ -26,7 +28,8 @@ const FullPost = () => {
 
     const addLike = async () => {
         try {
-            await addLikeonPost({ postId, userId: "Ashlok2003" }).unwrap();
+            await addLikeonPost({ postId, userId: userData._id }).unwrap();
+
         } catch (error) {
             if (error.originalStatus !== 200)
                 console.error('Failed to delete post:', error);
@@ -36,7 +39,7 @@ const FullPost = () => {
     const onComment = async (comment) => {
 
         try {
-            await addComment({ postId: data._id, userId: "Ashlok2003", username: "Ashlok2003", text: comment.comment });
+            await addComment({ postId: data.postId, userId: userData._id, username: userData.name, userImage: userData.avatarImage, text: comment.comment });
         } catch (error) {
             console.log(error);
         } finally {
@@ -74,7 +77,7 @@ const FullPost = () => {
                             </Col>
                             <ButtonGroup className='d-flex align-items-center justify-content-between'>
                                 <Button variant='light' onClick={addLike}>
-                                    <i className="fa-regular fa-thumbs-up">&nbsp; {data?.likes?.length}</i>
+                                    <i className={`${data?.likes.includes(userData._id) ? 'fa-solid fa-thumbs-up' : 'fa-regular fa-thumbs-up'}`}> &nbsp; {data?.likes?.length}</i>
                                 </Button>
                                 <Button variant='light'>
                                     <i className="fa-solid fa-retweet"></i>
@@ -93,11 +96,16 @@ const FullPost = () => {
                             <Col lg={12} style={{ minHeight: "70vh", maxHeight: "70vh" }}>
                                 {
                                     data && data?.comments?.map((x, i) =>
-                                        <div key={i} className={`d-flex ${x?.user === "Ashlok2003" ? 'justify-content-end ' : 'justify-content-start'}`}>
-                                            <div className={`px-3 py-1 rounded-3 mb-1 mt-1 ${x?.user === "Ashlok2003" ? 'bg-dark text-white' : ''}`}>
-                                                <h5 className='fw-bolder'>{x?.text}</h5>
-                                                <span className='fw-bolder' style={{ fontSize: '10px' }}>{x?.user}</span>
+                                        <div key={i} className={`d-flex align-items-center ${x?.user === userData?.name ? 'justify-content-end ' : 'justify-content-start'}`}>
+                                            {
+                                                (x?.user !== userData?.name) && <img src={x.userImage ? x.userImage : 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/330px-User_icon_2.svg.png'} className='img-fluid' alt="" style={{ height: '30px' }} />
+                                            }
+                                            <div className={`d-flex align-items-center px-4 py-2 rounded-4 mb-1 mt-1 ${x?.user === userData?.name ? 'bg-dark text-white' : 'bg-primary text-white'}`}>
+                                                <span className='fw-bolder'>{x?.text}</span>
                                             </div>
+                                            {
+                                                (x?.user === userData?.name) && <img src={x.userImage ? x.userImage : 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/330px-User_icon_2.svg.png'} className='img-fluid' alt="" style={{ height: '30px' }} />
+                                            }
                                         </div>
                                     )
                                 }

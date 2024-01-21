@@ -24,7 +24,7 @@ const handleLogin = async (req, res) => {
         const accessToken = JWT.sign(
             { "name": foundUserData.name },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '30m' }
+            { expiresIn: '30s' }
         );
 
         const refreshToken = JWT.sign(
@@ -38,11 +38,13 @@ const handleLogin = async (req, res) => {
 
             res.cookie('jwt', refreshToken, {
                 httpOnly: true, sameSite: 'None',
+                secure: true,
+                path: '/',
                 maxAge: 24 * 60 * 60 * 1000
             });
 
             const updatedUserData = await User.findOne({ email });
-            
+
             //! Accessing all the server- functionalities using accesstoken only... :)
             return res.status(200).json({ userData: { ...updatedUserData, accessToken } });
         }

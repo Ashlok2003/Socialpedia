@@ -1,10 +1,21 @@
 import React from 'react';
-import { Container, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Container, Row, Col, OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus, faBell, faGrip, faHouseChimney, faEarthAmericas, faSun, faEnvelopeOpen, faUserShield } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router-dom';
+import AddPost from '../posts/AddPost';
 
 const Footer = () => {
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleModalOpen = () => {
+    setOpen(true);
+  }
+
+  const handleModalClose = () => {
+    setOpen(false);
+  }
   const renderer = (x) => {
     return <Tooltip>{x}</Tooltip>;
   };
@@ -24,7 +35,7 @@ const Footer = () => {
             </OverlayTrigger>
 
             <OverlayTrigger placement='bottom' overlay={renderer('Reels')}>
-              <NavLink to='' ><FontAwesomeIcon icon={faCirclePlus} className="fs-1 text-dark rounded-circle" /></NavLink>
+              <Button variant='light' onClick={handleModalOpen}><FontAwesomeIcon icon={faCirclePlus} className="fs-1 text-dark rounded-circle" /></Button>
             </OverlayTrigger>
 
             <OverlayTrigger placement='bottom' overlay={renderer('Messages')}>
@@ -37,6 +48,7 @@ const Footer = () => {
           </Col>
         </Row>
       </Container>
+      <AddPost value={open} onClose={handleModalClose} />
     </footer>
   );
 };

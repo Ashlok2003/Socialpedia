@@ -4,6 +4,10 @@
   "description": "The Ultimate Social Media Platform",
   "main": "index.js",
   "scripts": {
+    "setup-backend": "cd ./Backend && npm i",
+    "setup-frontend": "cd ./Frontend && npm i",
+    "start-frontend": "npm run dev",
+    "start-backend": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ashlok Chaudhary",

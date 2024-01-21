@@ -9,11 +9,12 @@ const JWT = require('jsonwebtoken');
 const handleRefreshToken = async (req, res) => {
 
     const cookies = req.cookies;
-
+    
     if (!cookies?.jwt) return res.sendStatus(401);
     //! Since the jwt access token is not available in cookies redirect to the authController
 
     const refreshToken = cookies.jwt;
+    console.log(refreshToken);
 
     try {
         const foundUserData = await User.findOne({ refreshToken });

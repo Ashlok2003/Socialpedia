@@ -20,7 +20,6 @@ const socket = (expressServer) => {
         socket.on('addUser', async (userId) => {
             console.log(userId);
 
-
             const isuserexists = users.find((user) => user.userId === userId.userID);
 
             if (!isuserexists) {

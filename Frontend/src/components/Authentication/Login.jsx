@@ -9,7 +9,8 @@ import { loginUser } from '@/store/Users/userSlice';
 import { getPosts } from '@/store/Posts/postSlice';
 import { useLoginMutation } from '@/store/Authentication/authApiSlice';
 import { setCredentials } from '@/store/Authentication/authSlice';
-
+import { store } from '../../store/store';
+import { extendedApiSlice } from '../../store/Posts/PostSliceRedux';
 const Login = ({ functionality }) => {
 
     const navigate = useNavigate();
@@ -20,10 +21,11 @@ const Login = ({ functionality }) => {
     const [login, { isLoading, isSuccess }] = useLoginMutation();
     const connectUser = async (data) => {
         try {
-            /* const response = await login(data);
-            console.log("Login ", response); */
-            /* dispatch(setCredentials({ userData: response.data._doc, accessToken: response.data.accessToken })); */
-            await dispatch(loginUser(data));
+
+            const response = await login(data).unwrap();
+            
+            dispatch(setCredentials({ userData: response.userData._doc, accessToken: response.userData.accessToken }));
+            store.dispatch(extendedApiSlice.endpoints.getPosts.initiate());
 
             reset();
             navigate('/home');

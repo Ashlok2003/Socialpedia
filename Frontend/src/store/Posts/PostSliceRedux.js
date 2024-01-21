@@ -6,7 +6,7 @@ import { apiSlice } from "./apiSlice";
 
 const postsAdapter = createEntityAdapter({
     sortComparer: (a, b) => b.createdAt.localeCompare(a.createdAt),
-    selectId: post => post._id
+    selectId: post => post.postId
 });
 
 const initialState = postsAdapter.getInitialState();
@@ -25,7 +25,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 }));
 
                 const normalisedData = postsAdapter.setAll(initialState, postsWithComments);
-                
+
                 return normalisedData;
 
             },
@@ -34,14 +34,14 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
                 return [
                     { types: 'POST', id: 'LIST' },
-                    ...result.ids.map(post => ({ type: 'POST', id: post._id }))
+                    ...result.ids.map(post => ({ type: 'POST', id: post.postId }))
                 ]
             }
 
         }),
 
         getPostsByUserId: builder.query({
-            query: (userId) => `/post/getPostById/${userId}`,
+            query: (postId) => `/post/getPostById/${postId}`,
 
             providesTags: (result, error, arg) => {
 
@@ -66,6 +66,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 const newPost = {
                     _id: "temp_id",
                     userId: newPostData.get('userId'),
+                    postId: newPostData.get('postId'),
                     title: newPostData.get('title'),
                     description: newPostData.get('description'),
                     isImage: newPostData.get('postImage') ? true : false,
@@ -91,8 +92,8 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 }
 
                 const optimisticUpdate = extendedApiSlice.util.updateQueryData('getPosts', undefined, (draft) => {
-                    draft.entities[newPost._id] = newPost;
-                    draft.ids.unshift(newPost._id);
+                    draft.entities[newPost.postId] = newPost;
+                    draft.ids.unshift(newPost.postId);
                 });
 
                 const patchResult = dispatch(optimisticUpdate);
@@ -119,7 +120,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         updatePost: builder.mutation({
 
             query: initialState => ({
-                url: `/post/updatepost/${initialState._id}`,
+                url: `/post/updatepost/${initialState.postId}`,
                 method: 'PATCH',
                 body: JSON.stringify(initialState)
             }),
@@ -197,13 +198,13 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
         addComment: builder.mutation({
 
-            query: ({ postId, userId, username, text }) => ({
+            query: ({ postId, userId, username, userImage, text }) => ({
                 url: `/post/addcomment/${postId}`,
                 method: 'POST',
-                body: { userId, username, text },
+                body: { userId, username, userImage, text },
             }),
 
-            async onQueryStarted({ postId, userId, username, text }, { dispatch, queryFulfilled }) {
+            async onQueryStarted({ postId, userId, username, userImage, text }, { dispatch, queryFulfilled }) {
 
                 const postCommentsResult = dispatch(
                     extendedApiSlice.util.updateQueryData('getPosts', undefined, (draft) => {
@@ -211,7 +212,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                         const post = draft.entities[postId];
 
                         if (post) {
-                            post.comments = [...post.comments, { userId, user: username, text }];
+                            post.comments = [...post.comments, { userId, user: username, userImage, text }];
                         }
                     })
                 );

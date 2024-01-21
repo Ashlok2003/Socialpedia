@@ -16,20 +16,23 @@ import Registration from './pages/Registration.jsx';
 import Welcome from './pages/Welcome.jsx';
 import { extendedApiSlice } from './store/Posts/PostSliceRedux.js';
 import VideoCalling from './components/VideoCall/VideoCalling.jsx';
+import RequireAuth from './components/User/RequireAuth.jsx';
 
-store.dispatch(extendedApiSlice.endpoints.getPosts.initiate());
+/* store.dispatch(extendedApiSlice.endpoints.getPosts.initiate()); */
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
-      <Route path='Home' element={<Home />} />
-      <Route path='Explore' element={<Explore />} />
-      <Route path='Messages' element={<MessageWindow />} />
-      <Route path='Profile' element={<Profile />} />
       <Route path='Registration' element={<Registration />} />
-      <Route path='Welcome' element={<Welcome />} />
-      <Route path="Fullpost/:postId" element={<FullPost />} />
-      <Route path="videocall/:roomId" element={<VideoCalling />} />
+      <Route element={<RequireAuth />} >
+        <Route path='Home' element={<Home />} />
+        <Route path='Explore' element={<Explore />} />
+        <Route path='Messages' element={<MessageWindow />} />
+        <Route path='Profile' element={<Profile />} />
+        <Route path='Welcome' element={<Welcome />} />
+        <Route path="Fullpost/:postId" element={<FullPost />} />
+        <Route path="videocall/:roomId" element={<VideoCalling />} />
+      </Route>
     </Route>
   )
 )

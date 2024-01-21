@@ -14,6 +14,7 @@ function App() {
   return (
     <>
       <Outlet />
+      <Footer />
     </>
   )
 }

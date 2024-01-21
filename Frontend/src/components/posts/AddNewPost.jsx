@@ -5,15 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faImages } from '@fortawesome/free-solid-svg-icons';
 import AddPost from './AddPost';
 import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '../../store/Authentication/authSlice';
+
 
 const AddNewPost = () => {
 
-  const userDataFromStore = useSelector(state => state.user.currentUser);
-  const [userData, setUserData] = useState(null);
-
-  useEffect(() => {
-    setUserData(userDataFromStore);
-  }, [userData]);
+  const userData = useSelector(selectCurrentUser);
 
   const [open, setOpen] = useState(false);
 
@@ -28,7 +25,7 @@ const AddNewPost = () => {
   return (
     <Container>
       <Row>
-        <Col lg={12} className='border shadow p-4 mt-3 rounded-4'>
+        <Col lg={12} className='border p-4 mt-3'>
           <div className='d-flex align-items-center justify-content-between'>
 
             <img src={userData?.avatarImage} alt="" style={{ width: '30px' }} />

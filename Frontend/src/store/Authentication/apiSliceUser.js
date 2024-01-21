@@ -6,14 +6,13 @@ import { logOut, setCredentials } from './authSlice';
 //* This unit is responsible for login & Refreshing Token functionality... :)
 
 const baseQuery = fetchBaseQuery({
-    
+
     baseUrl: 'http://localhost:3000/users',
     credentials: 'include',
 
     prepareHeaders: (headers, { getState }) => {
         const token = getState().auth.accessToken;
-        console.log(getState().auth);
-
+        
         if (token) {
             headers.set('authorization', `Bearer ${token}`);
         }
@@ -27,12 +26,10 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
     let result = await baseQuery(args, api, extraOptions);
 
-    console.log("Result : ", result);
-
     //! Since the access token expires then try to refresh the token... :)
 
     if (result?.error?.originalStatus === 403) {
-        console.log('Sending Refresh Token');
+        
 
         const refreshResult = await baseQuery('/refresh', api, extraOptions);
 
@@ -42,7 +39,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
             api.dispatch(setCredentials({ userData, accessToken: refreshResult.accessToken }));
 
             result = await baseQuery(args, api, extraOptions);
-            console.log(result);
         }
         else {
             api.dispatch(logOut())
@@ -53,6 +49,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 }
 
 export const apiSliceUser = createApi({
+    reducerPath: 'user',
     baseQuery: baseQueryWithReauth,
     tagTypes: ["users"],
     endpoints: builder => ({

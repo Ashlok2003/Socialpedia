@@ -4,9 +4,11 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import Input from '../inputs/Input';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 // import { addNewPost } from '@/store/Posts/postSlice';
 import { useAddNewPostMutation } from '@/store/Posts/PostSliceRedux';
+import { selectCurrentUser } from '../../store/Authentication/authSlice';
+import { v4 as uuidv4 } from 'uuid';
 
 const AddPost = ({ value, onClose }) => {
 
@@ -17,6 +19,8 @@ const AddPost = ({ value, onClose }) => {
         setShow(value);
     }, [value]);
 
+    const userData = useSelector(selectCurrentUser);
+
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
     const handleClose = () => {
@@ -26,13 +30,15 @@ const AddPost = ({ value, onClose }) => {
     // const dispatch = useDispatch();
 
     const [addNewPost, { isLoading }] = useAddNewPostMutation();
+    const uniqueId = uuidv4();
 
     const onSubmit = async (data) => {
         const formdata = new FormData();
         formdata.append('postImage', image);
         formdata.append('title', data.title);
         formdata.append('description', data.description);
-        formdata.append('userId', "Ashlok2003");
+        formdata.append('userId', userData.name);
+        formdata.append('postId', uniqueId);
 
         try {
             // dispatch(addNewPost(formdata));
@@ -64,12 +70,19 @@ const AddPost = ({ value, onClose }) => {
 
 
     return (
-        <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton> </Modal.Header>
+        <Modal show={show} fullscreen={true} onHide={handleClose}>
+            <Modal.Header closeButton>
+                <div className='ms-auto'>
+                    <span className="text-danger fw-bolder mx-2 fs-4">Write</span>
+                    <span className="text-warning fw-bolder mx-2 fs-4">Share</span>
+                    <span className="text-success fw-bolder mx-2 fs-4">Inspire</span>
+                </div>
+
+            </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit(onSubmit)}>
                     <Form.Group className='mb-3 text-center'>
-                        <div {...getRootProps()} style={{ border: '2px dashed #aaaaaa', padding: '20px', textAlign: 'center' }} className='text-center'>
+                        <div {...getRootProps()} style={{ border: isDragActive ? '2px dashed #aaaaaa' : '1px solid #aaaaaa', padding: '20px', textAlign: 'center' }} className='text-center'>
                             <input {...getInputProps()} />
                             <img src="https://i.ibb.co/0C3PhGt/5566821-2888068.jpg" alt="upload file" className='img-fluid w-50' style={{ cursor: 'pointer' }} />
                         </div>
@@ -83,15 +96,17 @@ const AddPost = ({ value, onClose }) => {
                         {errors.title && <span className='text-danger fw-bolder'>Title is required !</span>}
                     </Form.Group>
                     <Form.Group className='mb-3'>
-                        <Input inputType='text' inputClassName='form-control py-5'
-                            label='Post Content' labelClassName='fw-bolder fs-5 mb-1' placeholder='Enter Content of your post....'
+                        <Form.Label className='fw-bolder fs-5 mb-1'>Post Content</Form.Label>
+                        <textarea type='text' className='form-control'
+                            rows={7}
+                            placeholder='Enter Content of your post....'
                             {...register("description", { required: true })}
-                        ></Input>
+                        ></textarea>
 
                         {errors.description && <span className='text-danger fw-bolder'>Write Description !</span>}
                     </Form.Group>
 
-                    <Button variant='light' className='fw-bolder w-100' type='submit'> Upload </Button>
+                    <Button variant='dark' className='fw-bolder w-100 rounded-5' type='submit'> Upload </Button>
 
                 </Form>
             </Modal.Body>

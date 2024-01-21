@@ -11,6 +11,7 @@ import data from '@emoji-mart/data';
 import { useNavigate } from 'react-router-dom';
 
 import Input from '../inputs/Input';
+import { selectCurrentUser } from '../../store/Authentication/authSlice';
 
 const MessageWindow = () => {
 
@@ -30,7 +31,7 @@ const MessageWindow = () => {
 
     const [socket, setSocket] = useState(null);
     const [selectedUser, setSelectedUser] = useState(null);
-    const currentUser = useSelector(state => state.user.currentUser);
+    const currentUser = useSelector(selectCurrentUser);
     const [receiverId, setReceiverId] = useState(null);
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);

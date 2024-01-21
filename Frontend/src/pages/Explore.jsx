@@ -6,8 +6,8 @@ import axios from 'axios';
 
 function Explore() {
 
-    const [searchText, setSearchText] = useState(null);
-    const [searchData, setSearchData] = useState(null);
+    const [searchText, setSearchText] = useState('');
+    const [searchData, setSearchData] = useState('');
 
     const fetchUsers = async () => {
         try {

@@ -26,10 +26,10 @@ const addPost = (req, res) => {
 
         if (!req.file) {
             // Handling the case when the user doesn't provide an image
-            const { userId, title, description } = req.body;
+            const { userId, title, postId, description } = req.body;
 
             try {
-                const newPost = new Post({ userId, title, description, isImage: false });
+                const newPost = new Post({ userId, postId, title, description, isImage: false });
                 await newPost.save();
                 return res.sendStatus(200);
             } catch (error) {
@@ -38,13 +38,13 @@ const addPost = (req, res) => {
             }
         }
 
-        const { userId, title, description } = req.body;
+        const { userId, postId, title, description } = req.body;
         const imageUrl = req.file.path;
 
         console.log(userId, title, description, imageUrl);
 
         try {
-            const newPost = new Post({ userId, title, description, isImage: true, imagePath: imageUrl });
+            const newPost = new Post({ userId, title, postId, description, isImage: true, imagePath: imageUrl });
             await newPost.save();
             return res.sendStatus(200);
         } catch (error) {
@@ -56,10 +56,11 @@ const addPost = (req, res) => {
 
 const updatePost = async (req, res) => {
     try {
-        const id = req.params.id;
+        const postId = req.params.id;
         const { title, description } = req.body;
 
-        const updated = await Post.findByIdAndUpdate(id, { title, description }, { new: true });
+        const updated = await Post.findOneAndUpdate({ postId }, { title, description }, { new: true });
+
         if (!updated) {
             return res.status(404).json({ message: "Post not found" });
         }
@@ -69,12 +70,14 @@ const updatePost = async (req, res) => {
     } catch (error) {
         return res.status(500).json({ message: "Error while updating post", error });
     }
-}
+};
+
 
 const deletePost = async (req, res) => {
     try {
-        const id = req.params.id;
-        const deleted = await Post.findByIdAndDelete(id);
+        const postId = req.params.id;
+        const deleted = await Post.findOneAndDelete({ postId });
+
         if (!deleted)
             return res.status(404).json({ message: "Post Not Found !" });
 
@@ -121,18 +124,18 @@ const fetchPostById = async (req, res) => {
 
 const addComments = async (req, res) => {
     try {
-        const id = req.params.id;
-        const { userId, username, text } = req.body;
+        const postId = req.params.id;
+        const { userId, username, userImage, text } = req.body;
 
-        console.log(id, userId, username, text);
+        console.log(postId, userId, username, userImage, text);
 
-        const post = await Post.findById(id);
+        const post = await Post.findOne({ postId });
 
         if (!post) {
             return res.status(404).json({ message: "Post-Not-Found" });
         }
 
-        post.comments.push({ userId, user: username, text });
+        post.comments.push({ userId, user: username, userImage, text });
         await post.save();
 
         return res.sendStatus(200);
@@ -145,10 +148,10 @@ const addComments = async (req, res) => {
 const handleLike = async (req, res) => {
     try {
 
-        const id = req.params.id;
+        const postId = req.params.id;
         const { userId } = req.body;
 
-        const post = await Post.findById(id);
+        const post = await Post.findOne({ postId });
 
         if (post.likes.includes(userId)) {
             post.likes = post.likes.filter((x) => x.toString() !== userId);

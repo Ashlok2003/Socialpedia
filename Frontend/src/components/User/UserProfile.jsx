@@ -4,17 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignsPost, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { selectCurrentUser } from '../../store/Authentication/authSlice';
+import { useMediaQuery } from 'react-responsive';
+
 const UserProfile = () => {
 
-    const userDataFromStore = useSelector((state) => state.user.currentUser);
-    const [userData, setUserData] = useState(null);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+    const userData = useSelector(selectCurrentUser);
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        setUserData(userDataFromStore);
-
-    }, [userData])
     return userData ? <Container fluid>
         <Row>
             <Col lg={12}>
@@ -23,14 +22,14 @@ const UserProfile = () => {
                         <img
                             src={userData?.avatarImage}
                             alt="User Profile"
-                            className='img-fluid w-50 rounded-circle'
+                            className={`img-fluid  rounded-circle ${isMobile ? 'w-25' : 'w-50'}`}
                         />
                         <h6 className='fw-bolder fs-4'>{userData?.name}</h6>
                     </Col>
                     <Col sm={8} className='d-flex align-items-center justify-content-between py-2 border-bottom'>
                         <Col className='d-flex flex-column text-center me-3'>
                             <h4 className='fw-bolder'>Posts</h4>
-                            <h6>1200</h6>
+                            <h6>0</h6>
                         </Col>
                         <Col className='d-flex flex-column text-center me-3'>
                             <h4 className='fw-bolder'>Followers</h4>

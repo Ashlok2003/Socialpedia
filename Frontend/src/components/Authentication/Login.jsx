@@ -11,6 +11,7 @@ import { useLoginMutation } from '@/store/Authentication/authApiSlice';
 import { setCredentials } from '@/store/Authentication/authSlice';
 import { store } from '../../store/store';
 import { extendedApiSlice } from '../../store/Posts/PostSliceRedux';
+
 const Login = ({ functionality }) => {
 
     const navigate = useNavigate();

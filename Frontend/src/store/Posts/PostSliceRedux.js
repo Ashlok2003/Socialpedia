@@ -39,11 +39,25 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 			}
 		}),
 
-		getPostsByUserId: builder.query({
+		getPostsByPostId: builder.query({
 			query: (postId) => `/post/getPostById/${postId}`,
 
 			providesTags: (result, error, arg) => {
 				return [...result.ids.map((id) => ({ type: "POST", id }))];
+
+			}
+		}),
+
+		getPostsByUserId: builder.query({
+			query: (userId) => `/post/getalluserposts/${userId}`,
+
+			transformResponse: (responseData) => {
+				const postUpdated = responseData.map((x) => ({ ...x, imagePath: `http://localhost:3000/${x.imagePath}` }));
+				return postUpdated;
+			},
+
+			providesTags: (result, error, arg) => {
+				return [...result.map((id) => ({ type: "POST", id }))];
 			},
 		}),
 
@@ -237,6 +251,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 export const {
 	useGetPostsQuery,
 	useGetPostsByUserIdQuery,
+	useGetPostsByPostIdQuery,
 	useAddNewPostMutation,
 	useUpdatePostMutation,
 	useDeletePostMutation,

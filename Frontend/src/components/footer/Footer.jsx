@@ -21,11 +21,11 @@ const Footer = () => {
   };
 
   return (
-    <footer className="footer mt-auto py-3 sticky-bottom container-fluid">
+    <footer className="footer mt-auto py-2 sticky-bottom container-fluid">
       <Container fluid>
         <Row className='align-items-center justify-content-center px-lg-3'>
 
-          <Col lg={6} xl={5} className='d-flex align-items-center bg-light justify-content-between border shadow rounded-4 px-4 py-3'>
+          <Col lg={6} xl={5} className='d-flex align-items-center bg-light justify-content-between border shadow rounded-4 px-4 py-2'>
             <OverlayTrigger placement='bottom' overlay={renderer('Home')}>
               <NavLink to='Home'> <FontAwesomeIcon icon={faHouseChimney} className="fs-5 text-dark" /></NavLink>
             </OverlayTrigger>
@@ -43,7 +43,7 @@ const Footer = () => {
             </OverlayTrigger>
 
             <OverlayTrigger placement='bottom' overlay={renderer('Profile')}>
-              <NavLink to='Profile'><FontAwesomeIcon icon={faUserShield} className="fs-5 text-dark" /></NavLink>
+              <NavLink to='UserProfile'><FontAwesomeIcon icon={faUserShield} className="fs-5 text-dark" /></NavLink>
             </OverlayTrigger>
           </Col>
         </Row>

@@ -4,8 +4,6 @@ import axios from 'axios';
 
 const initialState = {
     currentUser: null,
-    otherUsers: [],
-
     currentUsersLoading: false,
     otherUsersLoading: false,
 
@@ -28,41 +26,6 @@ export const registerUser = createAsyncThunk('/user/registerUser', async (userDa
     }
 })
 
-export const loginUser = createAsyncThunk('/user/loginUser', async (userData) => {
-    try {
-        const response = await axios.post(`${USERS_URL}/login`, userData, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        return response.data.userData._doc;
-    } catch (error) {
-        throw error;
-    }
-});
-
-
-export const logoutUser = createAsyncThunk('/user/logoutUser', async (userData) => {
-    try {
-        await axios.get(`${USERS_URL}/logout`);
-        return null;
-    } catch (error) {
-        throw error;
-    }
-});
-
-export const fetchAllUsers = createAsyncThunk('/user/fetchAllUsers', async () => {
-    try {
-        const response = await axios.get(`${USERS_URL}/fetchallusers`);
-        console.log("Fetch all users : ", response.data);
-        return response.data;
-
-    } catch (error) {
-        throw error;
-    }
-});
-
-
 export const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -78,33 +41,10 @@ export const userSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(loginUser.fulfilled, (state, action) => {
-                state.currentUsersLoading = false;
-                state.currentUser = action.payload;
-                state.errors = null;
+            .addCase(registerUser.fulfilled, (state, action) => {
+               
             })
-            .addCase(loginUser.pending, (state) => {
-                state.currentUsersLoading = true;
-            })
-            .addCase(loginUser.rejected, (state, action) => {
-                state.currentUsersLoading = false;
-                state.errors = action.error.message;
-            })
-            .addCase(logoutUser.fulfilled, (state) => {
-                state.currentUser = null;
-                state.currentUsersLoading = false;
-            })
-            .addCase(fetchAllUsers.fulfilled, (state, action) => {
-                state.otherUsers = action.payload;
-                state.otherUsersLoading = false;
-            })
-            .addCase(fetchAllUsers.pending, (state, action) => {
-                state.otherUsersLoading = true;
-            })
-            .addCase(fetchAllUsers.rejected, (state, action) => {
-                state.otherUsers = [];
-                state.otherUsersLoading = false;
-            })
+            
     }
 });
 

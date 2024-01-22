@@ -24,7 +24,7 @@ const socket = (expressServer) => {
 
             if (!isuserexists) {
                 const userData = await User.findOne({ _id: userId.userID });
-                users.push({ userData: { _id: userId.userID, name: userData.name, email: userData.name, avatarImage: userData.avatarImage }, socketId: socket.id })
+                users.push({ userData: { _id: userId.userID, name: userData.name, email: userData.email, avatarImage: userData.avatarImage }, socketId: socket.id })
             }
 
             io.emit('userList', users);
@@ -75,7 +75,7 @@ const socket = (expressServer) => {
         });
 
         socket.on('activity', ({ userId, receiverId }) => {
-            //! Broadcasting that specific user only about the current user activity.....
+            //! Broadcasting that specific user only about the current user activity..... :)
 
             const receiverSocket = users.find((user) => user.userId === receiverId);
 

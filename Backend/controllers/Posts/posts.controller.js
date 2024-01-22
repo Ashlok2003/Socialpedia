@@ -101,8 +101,9 @@ const fetchAllPosts = async (req, res) => {
 const fetchUserPosts = async (req, res) => {
     try {
         const id = req.params.id;
+        console.log(id);
         const response = await Post.find({ userId: id });
-
+        console.log(response);
         return res.status(200).json(response);
     } catch (error) {
 
@@ -112,8 +113,8 @@ const fetchUserPosts = async (req, res) => {
 
 const fetchPostById = async (req, res) => {
     try {
-        const id = req.params.id;
-        const response = await Post.findOne({ _id: id });
+        const name = req.params.id;
+        const response = await Post.findOne({ userId: name });
         return res.status(200).json(response);
 
     } catch (error) {

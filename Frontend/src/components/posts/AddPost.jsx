@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState, useCallback } from 'react'
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, Col } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import Input from '../inputs/Input';
@@ -81,13 +81,16 @@ const AddPost = ({ value, onClose }) => {
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit(onSubmit)}>
+
+
                     <Form.Group className='mb-3 text-center'>
                         <div {...getRootProps()} style={{ border: isDragActive ? '2px dashed #aaaaaa' : '1px solid #aaaaaa', padding: '20px', textAlign: 'center' }} className='text-center'>
                             <input {...getInputProps()} />
-                            <img src="https://i.ibb.co/0C3PhGt/5566821-2888068.jpg" alt="upload file" className='img-fluid w-50' style={{ cursor: 'pointer' }} />
+                            <img src="https://i.ibb.co/0C3PhGt/5566821-2888068.jpg" alt="upload file" className='img-fluid w-25' style={{ cursor: 'pointer' }} />
                         </div>
                         {image && <span className='text-primary fw-bolder'>{image.path} - Uploaded Successfully !</span>}
                     </Form.Group>
+
                     <Form.Group className='mb-3'>
                         <Input inputType='text' inputClassName='form-control py-2'
                             label='Post Title' labelClassName='fw-bolder fs-5 mb-1' placeholder='Enter title of your post....'
@@ -95,6 +98,7 @@ const AddPost = ({ value, onClose }) => {
                         ></Input>
                         {errors.title && <span className='text-danger fw-bolder'>Title is required !</span>}
                     </Form.Group>
+
                     <Form.Group className='mb-3'>
                         <Form.Label className='fw-bolder fs-5 mb-1'>Post Content</Form.Label>
                         <textarea type='text' className='form-control'
@@ -106,7 +110,8 @@ const AddPost = ({ value, onClose }) => {
                         {errors.description && <span className='text-danger fw-bolder'>Write Description !</span>}
                     </Form.Group>
 
-                    <Button variant='dark' className='fw-bolder w-100 rounded-5' type='submit'> Upload </Button>
+                    <Button variant='dark' className='fw-bolder w-100 rounded-0' type='submit'> Upload </Button>
+
 
                 </Form>
             </Modal.Body>

@@ -38,4 +38,6 @@ const userSchema = new mongoose.Schema({
         default: ''
     }
 })
+
+userSchema.index({ name: 1 });
 module.exports = mongoose.model("User", userSchema);

@@ -7,8 +7,6 @@ import authReducer from "./Authentication/authSlice";
 
 export const store = configureStore({
     reducer: {
-        posts: postSlice,
-        user: userSlice,
         [apiSlice.reducerPath]: apiSlice.reducer,
         [apiSliceUser.reducerPath]: apiSliceUser.reducer,
         auth: authReducer,

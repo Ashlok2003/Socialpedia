@@ -53,9 +53,10 @@ const UserProfile = () => {
                     </Button>
                 </Row>
             </Col>
-            <Col className='vh-100'>
+            <Col className='' style={{marginBottom : '40vh'}}>
                 <div className='text-center py-2 border-bottom'>
                     <h6 className='fw-bolder'>Your Posts <FontAwesomeIcon icon={faSignsPost} /></h6>
+                    
                 </div>
             </Col>
         </Row >

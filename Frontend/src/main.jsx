@@ -9,26 +9,28 @@ import { store } from './store/store.js';
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import MessageWindow from './components/messages/MessageWindow.jsx';
-import Profile from './pages/Profile.jsx';
+import SearchProfile from './components/User/SearchProfile.jsx';
 import Explore from './pages/Explore.jsx';
 import FullPost from './components/posts/FullPost.jsx';
-import Registration from './pages/Registration.jsx';
 import Welcome from './pages/Welcome.jsx';
-import { extendedApiSlice } from './store/Posts/PostSliceRedux.js';
 import VideoCalling from './components/VideoCall/VideoCalling.jsx';
 import RequireAuth from './components/User/RequireAuth.jsx';
+import Login from './components/Authentication/Login.jsx';
+import Signup from './components/Authentication/Signup.jsx';
+import Profile from './pages/Profile.jsx';
 
-/* store.dispatch(extendedApiSlice.endpoints.getPosts.initiate()); */
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
-      <Route path='Registration' element={<Registration />} />
+      <Route path='Login' element={<Login />} />
+      <Route path='SignUp' element={<Signup />} />
       <Route element={<RequireAuth />} >
         <Route path='Home' element={<Home />} />
         <Route path='Explore' element={<Explore />} />
+        <Route path='Profile/:username/:userId' element={<SearchProfile />} />
         <Route path='Messages' element={<MessageWindow />} />
-        <Route path='Profile' element={<Profile />} />
+        <Route path='UserProfile' element={<Profile />} />
         <Route path='Welcome' element={<Welcome />} />
         <Route path="Fullpost/:postId" element={<FullPost />} />
         <Route path="videocall/:roomId" element={<VideoCalling />} />

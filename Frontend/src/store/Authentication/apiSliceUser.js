@@ -25,7 +25,6 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  console.log("Result : ", result);
 
   //! Since the access token expires then try to refresh the token... :)
 

@@ -10,10 +10,6 @@ import Status from '../components/home/Status';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 function Home() {
 
-
-
-
-
     const { isLoading, isSuccess } = useGetPostsQuery();
     const postIds = useSelector(selectPostIds);
 
@@ -27,16 +23,16 @@ function Home() {
                 </Col>
 
                 <Col lg={6} sm={12} className=''>
-                    <Col lg={12} className=''>
+                    {/* <Col lg={12} className=''>
                         <Status />
-                    </Col>
+                    </Col> */}
 
-                    <AddNewPost />
+                    {/* <AddNewPost /> */}
                     {
                         isSuccess && postIds?.map((postId) => <Posts key={postId} postId={postId} />)
                     }
                     {
-                        isLoading && <div>Loading....</div>
+                        isLoading && <div className='loader'></div>
                     }
 
                 </Col>

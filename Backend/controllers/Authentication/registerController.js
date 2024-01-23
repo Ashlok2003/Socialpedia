@@ -5,7 +5,7 @@ const User = require('../../models/User');
 ! Onboarding the new user at the platform.... */
 
 const handleNewUser = async (req, res) => {
-    const { name, email, password, bio } = req.body;
+    const { name, email, avatarImage, password, bio } = req.body;
 
     if (!name || !email || !password || !bio)
         return res.status(404).json({ "message": "Username & Password & Avatar Image Required... Required !" });
@@ -20,6 +20,7 @@ const handleNewUser = async (req, res) => {
         const newUser = new User({
             name,
             email,
+            avatarImage,
             password: hashedPassword,
             bio,
         });

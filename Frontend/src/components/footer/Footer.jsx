@@ -25,7 +25,7 @@ const Footer = () => {
       <Container fluid>
         <Row className='align-items-center justify-content-center px-lg-3'>
 
-          <Col lg={6} xl={5} className='d-flex align-items-center bg-light justify-content-between border shadow rounded-4 px-4 py-2'>
+          <Col lg={6} xl={5} className='d-flex mt-auto align-items-center bg-light justify-content-between border shadow rounded-4 px-4 py-2'>
             <OverlayTrigger placement='bottom' overlay={renderer('Home')}>
               <NavLink to='Home'> <FontAwesomeIcon icon={faHouseChimney} className="fs-5 text-dark" /></NavLink>
             </OverlayTrigger>

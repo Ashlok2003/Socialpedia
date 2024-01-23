@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import Input from '../inputs/Input';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { registerUser } from '@/store/Users/userSlice';
+
 import axios from 'axios';
 import { Buffer } from 'buffer';
 
@@ -35,9 +35,11 @@ const Signup = () => {
         fetchAvatars();
     }, []);
 
-    const createUser = (data) => {
+    const createUser = async (data) => {
+
         try {
-            dispatch(registerUser(data));
+            const response = await axios.post('http://localhost:3000/users/register', data);
+            console.log(response.data);
             reset();
 
         } catch (error) {
@@ -50,7 +52,7 @@ const Signup = () => {
     return (
 
         <Container>
-            <Row className='d-flex align-items-center justify-content-center mt-2'>
+            <Row className='d-flex align-items-center justify-content-center mt-2 mb-5'>
                 <Col lg={6} className='mt-3'>
                     <Form onSubmit={handleSubmit(createUser)}>
 

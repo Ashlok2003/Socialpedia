@@ -2,7 +2,6 @@ const router = require('express').Router();
 const verifyJWT = require('../../middleware/verifyJWT');
 const { addPost, updatePost, deletePost,
     fetchAllPosts, fetchUserPosts, addComments, handleLike, fetchPostById } = require('../../controllers/Posts/posts.controller');
-//! All Post related operations should handle gracefully.....
 
 router.get('/getallposts', verifyJWT, fetchAllPosts);
 router.get('/getPostById/:id', verifyJWT, fetchPostById);

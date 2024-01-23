@@ -8,32 +8,61 @@ import { useMediaQuery } from 'react-responsive';
 import axios from '../../api/fetchUser';
 import useAxiosFunction from '../../hooks/useAxiosFunction';
 import { useGetPostsByUserIdQuery } from '../../store/Posts/PostSliceRedux';
+import { useGetUserByIdQuery, useUpdateUserFollowingMutation } from '../../store/Users/UserSliceRedux';
+import { selectCurrentUser } from '../../store/Authentication/authSlice';
+import FollowData from './FollowData';
 
-const UserProfile = () => {
-
+const SearchProfile = () => {
 
     const { username, userId } = useParams();
-    const [response, error, loading, axiosFetch] = useAxiosFunction(userId);
+    /* 
+        const [response, error, loading, axiosFetch] = useAxiosFunction(userId);
+    
+        const getUserData = async () => {
+            await axiosFetch({
+                axiosInstance: axios,
+                method: 'get',
+                url: `/fetchuserbyuserid/${userId}`,
+            })
+        }
+     */
+    const { currentData: response, isLoading, error , refetch} = useGetUserByIdQuery(userId);
 
-    const getUserData = async () => {
-        await axiosFetch({
-            axiosInstance: axios,
-            method: 'get',
-            url: `/fetchuserbyuserid/${userId}`,
-        })
-    }
+
+    /* console.log(userId);
+    console.log(response); */
+
+    const currentUser = useSelector(selectCurrentUser);
+    /* console.log("Current User", currentUser);
+    console.log("Selected User", response); */
 
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
     const navigate = useNavigate();
 
-    const { data: posts, isLoading } = useGetPostsByUserIdQuery(username);
+    const { data: posts } = useGetPostsByUserIdQuery(username);
+
+    const [handleFollow] = useUpdateUserFollowingMutation();
+
+    const updateFollow = async () => {
+        try {
+            const responseData = await handleFollow({
+                id: currentUser._id, userId,
+                name: response.name, email: response.email,
+                avatarImage: response.avatarImage
+            }).unwrap();
+
+            refetch();
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     useEffect(() => {
-        getUserData();
+        //getUserData();
     }, []);
 
-
-    return (
+    return isLoading ? <div>Loading....</div>
+        :
         <>
             <Container fluid>
                 <Row className='d-flex align-items-center justify-content-center flex-column'>
@@ -54,11 +83,11 @@ const UserProfile = () => {
                                 </Col>
                                 <Col className='d-flex flex-column text-center me-3'>
                                     <h4 className='fw-bolder'>Followers</h4>
-                                    <h6>{response?.followers.length}</h6>
+                                    <h6 className='fw-bolder'>{response?.followers?.length}</h6>
                                 </Col>
                                 <Col className='d-flex flex-column text-center'>
                                     <h4 className='fw-bolder'>Following</h4>
-                                    <h6>{response?.following.length}</h6>
+                                    <h6 className='fw-bolder'>{response?.following?.length}</h6>
                                 </Col>
                             </Col>
                         </Row>
@@ -69,9 +98,24 @@ const UserProfile = () => {
                             </Col>
                         </Row>
                         <Row className='d-flex justify-content-center border-bottom py-3'>
-                            <Button variant='dark' className='fw-bolder rounded-0'>
-                                Follow&nbsp;<FontAwesomeIcon icon={faUserPlus} />
-                            </Button>
+                            {
+                                !(response?.followers.includes(userId)) &&
+                                <Button variant='dark' className='fw-bolder rounded-0'
+                                    onClick={updateFollow}
+                                >
+                                    Follow&nbsp;<FontAwesomeIcon icon={faUserPlus} />
+                                </Button>
+                            }
+
+                            {
+                                response?.followers.includes(currentUser._id) &&
+                                <Button variant='light' className='fw-bolder rounded-0'
+                                    onClick={updateFollow}
+                                >
+                                    Following&nbsp;<FontAwesomeIcon icon={faUserPlus} />
+                                </Button>
+                            }
+
                         </Row>
                     </Col>
                     <Col lg={6} className='' style={{ marginBottom: '40vh' }}>
@@ -82,7 +126,7 @@ const UserProfile = () => {
 
                         <div className='d-flex flex-wrap mt-2'>
                             {posts && posts?.map((x, i) => (
-                                <div key={i} className='img-container col-md-3 mx-1' style={{ cursor: 'pointer' }}>
+                                <div key={i} className='img-container col-lg-2 col-md-2 mx-1' style={{ cursor: 'pointer' }}>
                                     <img src={x.imagePath} alt={'userImage'} style={{ height: '120px' }} />
                                 </div>
                             ))}
@@ -94,8 +138,7 @@ const UserProfile = () => {
 
             </Container >
         </>
-    )
 
 };
 
-export default UserProfile;
+export default SearchProfile;

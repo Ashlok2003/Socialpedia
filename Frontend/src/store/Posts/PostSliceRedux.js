@@ -17,14 +17,14 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 			query: () => "/post/getallposts",
 
 			transformResponse: (responseData) => {
-				const postsWithComments = responseData.map((post) => ({
+				const postsData = responseData.map((post) => ({
 					...post,
 					imagePath: `http://localhost:3000/${post.imagePath}`,
 				}));
 
 				const normalisedData = postsAdapter.setAll(
 					initialState,
-					postsWithComments,
+					postsData,
 				);
 
 				return normalisedData;

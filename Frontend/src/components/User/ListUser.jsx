@@ -12,6 +12,8 @@ const ListUser = ({ searchTerm }) => {
 
     const { isLoading, error, data } = useSWR(searchTerm ? searchTerm : null, fetchUser);
 
+    
+
     return (
         <>
             {isLoading && <h1 className="loader text-center"></h1>}

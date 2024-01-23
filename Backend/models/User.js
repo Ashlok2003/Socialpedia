@@ -21,14 +21,18 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/330px-User_icon_2.svg.png'
     },
-    followers: {
-        type: [String],
-        default: []
-    },
-    following: {
-        type: [String],
-        default: []
-    },
+    followers: [{
+        id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        name: String,
+        email: String,
+        avatarImage: String
+    }],
+    following: [{
+        id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        name: String,
+        email: String,
+        avatarImage: String
+    }],
     accessToken: {
         type: String,
         default: ''
@@ -37,7 +41,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: ''
     }
-})
+});
 
 userSchema.index({ name: 1 });
 module.exports = mongoose.model("User", userSchema);

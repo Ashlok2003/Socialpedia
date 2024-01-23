@@ -17,11 +17,11 @@ export default function Welcome() {
         <Col lg={6} className='px-3'>
 
           <h2 className='fw-bolder display-4'>Start your Journey of discovery and entertainment with Socialpedia.  </h2>
-          <h2 className='fw-bolder mt-3'>" Let's explore the extraordinary together! "</h2>
+          <h2 className='fw-bolder mt-3'>" Let&apos;s explore the extraordinary together! "</h2>
           <p className='lead mt-4 text-justify' style={{ fontWeight: '400', fontStyle: 'italic' }}><span className='fw-bolder'>Welcome to Socialpedia</span>, <br/> Your go-to destination for insightful articles, engaging stories, and connecting people! Dive into a world of inspiration where we explore topics ranging from technology trends, lifestyle hacks, and thought-provoking pieces on the latest advancements.</p>
 
           <div className='text-end'>
-            <Button variant='dark btn-lg' className='px-5 fw-bolder rounded-0' onClick={() => navigate('/Registration')}>Register Now</Button>
+            <Button variant='dark btn-lg' className='px-5 fw-bolder rounded-0' onClick={() => navigate('/Login')}>Register Now</Button>
           </div>
 
         </Col>

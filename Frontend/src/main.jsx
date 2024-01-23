@@ -25,13 +25,13 @@ const router = createBrowserRouter(
     <Route path='/' element={<App />}>
       <Route path='Login' element={<Login />} />
       <Route path='SignUp' element={<Signup />} />
+      <Route path='Welcome' element={<Welcome />} />
       <Route element={<RequireAuth />} >
         <Route path='Home' element={<Home />} />
         <Route path='Explore' element={<Explore />} />
         <Route path='Profile/:username/:userId' element={<SearchProfile />} />
         <Route path='Messages' element={<MessageWindow />} />
         <Route path='UserProfile' element={<Profile />} />
-        <Route path='Welcome' element={<Welcome />} />
         <Route path="Fullpost/:postId" element={<FullPost />} />
         <Route path="videocall/:roomId" element={<VideoCalling />} />
       </Route>

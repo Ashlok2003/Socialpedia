@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { selectCurrentUser } from '../../store/Authentication/authSlice';
 import { useMediaQuery } from 'react-responsive';
 import { useGetPostsByUserIdQuery } from '../../store/Posts/PostSliceRedux';
-
+import { useGetUserByIdQuery } from '../../store/Users/UserSliceRedux';
 import FollowData from './FollowData';
 
 const UserProfile = () => {
@@ -18,10 +18,12 @@ const UserProfile = () => {
     const handleShow = () => setShow(prev => !prev);
 
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
-    const userData = useSelector(selectCurrentUser);
+    const authData = useSelector(selectCurrentUser);
 
-    const { data: posts, isLoading } = userData && useGetPostsByUserIdQuery(userData.name);
+    const { currentData: userData, error, refetch } = useGetUserByIdQuery(authData._id);
 
+    const { data: posts, isLoading } = useGetPostsByUserIdQuery(authData.name);
+    console.log(posts);
     const navigate = useNavigate();
 
     return userData ? <Container fluid>
@@ -42,13 +44,19 @@ const UserProfile = () => {
                             <h6 className='fw-bolder'>{posts?.length}</h6>
                         </Col>
                         <Col className='d-flex flex-column text-center me-3' style={{ cursor: 'pointer' }}
-                            onClick={() => handleShow() && setFollowData(userData?.followers)}
+                            onClick={() => {
+                                setFollowData({ text: "Followers", data: userData?.followers });
+                                handleShow();
+                            }}
                         >
                             <h4 className='fw-bolder'>Followers</h4>
                             <h6 className='fw-bolder'>{userData?.followers.length}</h6>
                         </Col>
                         <Col className='d-flex flex-column text-center' style={{ cursor: 'pointer' }}
-                            onClick={() => handleShow() && setFollowData(userData?.following)}
+                            onClick={() => {
+                                setFollowData({ text: "Following", data: userData?.following });
+                                handleShow();
+                            }}
                         >
                             <h4 className='fw-bolder'>Following</h4>
                             <h6 className='fw-bolder'>{userData?.following.length}</h6>
@@ -63,14 +71,14 @@ const UserProfile = () => {
                 </Row>
                 <Row className='d-flex justify-content-center border-bottom py-3'>
                     <Button variant='dark' className='fw-bolder rounded-0'>
-                        Follow&nbsp;<FontAwesomeIcon icon={faUserPlus} />
+                        Edit Profile
                     </Button>
                 </Row>
             </Col>
             <Col className='' style={{ marginBottom: '40vh' }}>
                 <div className='text-center py-2'>
                     <h6 className='fw-bolder'>Your Posts <FontAwesomeIcon icon={faSignsPost} /></h6>
-                    <div className='d-flex flex-wrap mt-2'>
+                    <div className='d-flex flex-wrap mt-2' onClick={() => navigate(`/UserPosts/${userData?.name}`)}>
                         {posts && posts?.map((x, i) => (
                             <div key={i} className='img-container col-lg-2 col-md-2 mx-2 mt-2' style={{ cursor: 'pointer' }}>
                                 <img src={x.imagePath} alt={'userImage'} style={{ height: '120px' }} />
@@ -83,7 +91,7 @@ const UserProfile = () => {
         </Row >
 
         <Row>
-            <FollowData value={show} setValue={setShow} data={followData} />
+            <FollowData value={show} setValue={setShow} followData={followData} />
         </Row>
 
     </Container >

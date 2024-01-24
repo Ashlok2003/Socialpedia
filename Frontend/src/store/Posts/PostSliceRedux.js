@@ -73,6 +73,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 					_id: "temp_id",
 					postId: newPostData.get('postId'),
 					userId: newPostData.get("userId"),
+					userImage: newPostData.get("userImage"),
 					title: newPostData.get("title"),
 					description: newPostData.get("description"),
 					isImage: newPostData.get("postImage") ? true : false,

@@ -13,8 +13,10 @@ import { selectCurrentUser } from '../../store/Authentication/authSlice';
 const FullPost = () => {
 
     const { postId } = useParams();
+    console.log(postId);
 
     const data = useSelector(state => selectPostById(state, postId));
+    console.log(data);
 
     const userData = useSelector(selectCurrentUser);
 
@@ -22,7 +24,6 @@ const FullPost = () => {
     const dispatch = useDispatch();
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
-
 
     const [addLikeonPost] = useAddReactionMutation();
 
@@ -104,7 +105,7 @@ const FullPost = () => {
                                                 <span className='fw-bolder'>{x?.text}</span>
                                             </div>
                                             {
-                                                (x?.user === userData?.name) && <img src={x.userImage ? x.userImage : 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/330px-User_icon_2.svg.png'} className='img-fluid' alt="" style={{ height: '30px' }} />
+                                                (x?.user === userData?.name) && <img src={x.userImage ? x.userImage : 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/330px-User_icon_2.svg.png'} className='img-fluid mx-2' alt="" style={{ height: '30px' }} />
                                             }
                                         </div>
                                     )

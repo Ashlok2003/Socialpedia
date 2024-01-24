@@ -12,6 +12,7 @@ import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 function App() {
   return (
     <>
+      <Header />
       <Outlet />
       <Footer />
     </>

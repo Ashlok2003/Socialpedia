@@ -15,26 +15,9 @@ import FollowData from './FollowData';
 const SearchProfile = () => {
 
     const { username, userId } = useParams();
-    /* 
-        const [response, error, loading, axiosFetch] = useAxiosFunction(userId);
-    
-        const getUserData = async () => {
-            await axiosFetch({
-                axiosInstance: axios,
-                method: 'get',
-                url: `/fetchuserbyuserid/${userId}`,
-            })
-        }
-     */
-    const { currentData: response, isLoading, error , refetch} = useGetUserByIdQuery(userId);
-
-
-    /* console.log(userId);
-    console.log(response); */
+    const { currentData: response, isLoading, error, refetch } = useGetUserByIdQuery(userId);
 
     const currentUser = useSelector(selectCurrentUser);
-    /* console.log("Current User", currentUser);
-    console.log("Selected User", response); */
 
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
     const navigate = useNavigate();
@@ -56,10 +39,6 @@ const SearchProfile = () => {
             console.log(error);
         }
     }
-
-    useEffect(() => {
-        //getUserData();
-    }, []);
 
     return isLoading ? <div>Loading....</div>
         :
@@ -98,24 +77,15 @@ const SearchProfile = () => {
                             </Col>
                         </Row>
                         <Row className='d-flex justify-content-center border-bottom py-3'>
-                            {
-                                !(response?.followers.includes(userId)) &&
-                                <Button variant='dark' className='fw-bolder rounded-0'
-                                    onClick={updateFollow}
-                                >
-                                    Follow&nbsp;<FontAwesomeIcon icon={faUserPlus} />
-                                </Button>
-                            }
 
                             {
-                                response?.followers.includes(currentUser._id) &&
-                                <Button variant='light' className='fw-bolder rounded-0'
+                                currentUser?._id !== response?._id &&
+                                <Button variant={response?.followers.some(x => x.id === currentUser?._id) ? 'light' : 'dark'} className='fw-bolder rounded-0'
                                     onClick={updateFollow}
                                 >
-                                    Following&nbsp;<FontAwesomeIcon icon={faUserPlus} />
+                                    {response?.followers.some(x => x.id === currentUser?._id) ? 'Following' : 'Follow'}&nbsp;<FontAwesomeIcon icon={faUserPlus} />
                                 </Button>
                             }
-
                         </Row>
                     </Col>
                     <Col lg={6} className='' style={{ marginBottom: '40vh' }}>
@@ -124,7 +94,7 @@ const SearchProfile = () => {
                         </div>
 
 
-                        <div className='d-flex flex-wrap mt-2'>
+                        <div className='d-flex flex-wrap mt-2' onClick={() => navigate(`/UserPosts/${username}`)}>
                             {posts && posts?.map((x, i) => (
                                 <div key={i} className='img-container col-lg-2 col-md-2 mx-1' style={{ cursor: 'pointer' }}>
                                     <img src={x.imagePath} alt={'userImage'} style={{ height: '120px' }} />

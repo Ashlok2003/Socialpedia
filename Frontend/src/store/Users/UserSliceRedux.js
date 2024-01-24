@@ -46,6 +46,7 @@ export const userApiSlice = userOperationApi.injectEndpoints({
 
                     if (existingFollowerIndex !== -1) {
                         console.log("User Exists !");
+                        
                         console.log({
                             ...oldQueryData,
                             followers: [

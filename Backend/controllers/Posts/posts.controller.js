@@ -26,10 +26,10 @@ const addPost = (req, res) => {
 
         if (!req.file) {
             // Handling the case when the user doesn't provide an image
-            const { userId, title, postId, description } = req.body;
+            const { userId, title, postId, description, userImage } = req.body;
 
             try {
-                const newPost = new Post({ userId, postId, title, description, isImage: false });
+                const newPost = new Post({ userId, postId, title, description, isImage: false, userImage });
                 await newPost.save();
                 return res.sendStatus(200);
             } catch (error) {
@@ -91,6 +91,7 @@ const deletePost = async (req, res) => {
 
 const fetchAllPosts = async (req, res) => {
     try {
+
         const posts = await Post.find();
         return res.status(200).json(posts);
     } catch (error) {
@@ -101,7 +102,7 @@ const fetchAllPosts = async (req, res) => {
 const fetchUserPosts = async (req, res) => {
     try {
         const id = req.params.id;
-        
+
         const response = await Post.find({ userId: id });
 
         return res.status(200).json(response);
@@ -115,7 +116,8 @@ const fetchPostById = async (req, res) => {
     try {
         const name = req.params.id;
         const response = await Post.findOne({ userId: name });
-        return res.status(200).json(response);
+        const userImage = await User.findOne({ name: response.userId }).select("avatarImage");
+        return res.status(200).json({ ...response, userImage });
 
     } catch (error) {
         return res.status(500).json({ message: "Error While Fetching User Posts !" });

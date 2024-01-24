@@ -18,6 +18,7 @@ import RequireAuth from './components/User/RequireAuth.jsx';
 import Login from './components/Authentication/Login.jsx';
 import Signup from './components/Authentication/Signup.jsx';
 import Profile from './pages/Profile.jsx';
+import UserPosts from './components/User/UserPosts.jsx';
 
 
 const router = createBrowserRouter(
@@ -32,9 +33,11 @@ const router = createBrowserRouter(
         <Route path='Profile/:username/:userId' element={<SearchProfile />} />
         <Route path='Messages' element={<MessageWindow />} />
         <Route path='UserProfile' element={<Profile />} />
+        <Route path="UserPosts/:id" element={<UserPosts />} />
         <Route path="Fullpost/:postId" element={<FullPost />} />
-        <Route path="videocall/:roomId" element={<VideoCalling />} />
+
       </Route>
+      <Route path="videocall/:room" element={<VideoCalling />} />
     </Route>
   )
 )

@@ -12,7 +12,7 @@ const ListUser = ({ searchTerm }) => {
 
     const { isLoading, error, data } = useSWR(searchTerm ? searchTerm : null, fetchUser);
 
-    
+
 
     return (
         <>
@@ -30,7 +30,7 @@ const ListUser = ({ searchTerm }) => {
                             <h6 className='fw-bolder'>{x.email}</h6>
                         </div>
                     </div>
-                    <Button variant='dark' className='rounded-0 me-2'>Follow</Button>
+                    
 
                 </div>
             ))}

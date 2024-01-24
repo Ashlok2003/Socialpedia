@@ -43,14 +43,16 @@ function Posts({ postId }) {
         <Container className='mt-3 border'>
             <Row>
                 <Col lg={12} className='d-flex align-items-center justify-content-between mt-1 border-bottom'>
-                    <Col lg={11} className='d-flex align-items-center py-2'>
+                    <Col lg={11} className='d-flex align-items-center py-2'
 
-                        <img src={""} alt="" style={{ width: '30px' }} />
+                    >
+
+                        <img src={data?.userImage} alt="" style={{ width: '30px' }} />
                         <span className='fw-bolder ms-3'>{data?.userId} <br /> <span className='text-muted'>Mumbai, Maharashtra</span></span>
 
                     </Col>
 
-                    <DropdownButton
+                    {userData.name === data?.userId && <DropdownButton
                         direction='start'
                         variant='light'
                         title={<i className="fa-solid fa-ellipsis-vertical"></i>}
@@ -59,13 +61,13 @@ function Posts({ postId }) {
                         <Dropdown.Item className='text-danger'
                             onClick={onDelete}
                         ><i className="fa-solid fa-trash"></i> Delete Post</Dropdown.Item>
-                    </DropdownButton>
+                    </DropdownButton>}
 
 
                 </Col>
                 <Col lg={12} className='mt-2 mb-2'>
                     <h6 className='fw-bolder mb-2'>{data?.title}</h6>
-                    <p className='truncate-3-lines' onClick={() => navigate(`/Fullpost/${data._id}`)} style={{ cursor: 'pointer' }}>{data?.description}</p>
+                    <p className='truncate-3-lines' onClick={() => navigate(`/Fullpost/${postId}`)} style={{ cursor: 'pointer' }}>{data?.description}</p>
 
                     <div className='text-center'>
                         <img src={`${data?.imagePath}`}

@@ -39,6 +39,7 @@ const AddPost = ({ value, onClose }) => {
         formdata.append('description', data.description);
         formdata.append('userId', userData.name);
         formdata.append('postId', uniqueId);
+        formdata.append('userImage', userData.avatarImage);
 
         try {
             // dispatch(addNewPost(formdata));

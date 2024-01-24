@@ -13,7 +13,7 @@ const path = require('path');
 app.use(express.json());
 app.use(cookieParser());
 app.use("/uploads", express.static("uploads"));
-
+app.use("/public", express.static("public"));
 app.use(
     cors({
         origin: function (origin, callback) {
@@ -98,6 +98,21 @@ app.get('/fetchUserStartWith/:name', async (req, res) => {
         res.sendStatus(500);
     }
 });
+
+app.get('/suggestions', async (req, res) => {
+    try {
+
+        const randomUser = await User.aggregate([
+            { $sample: { size: 4 } },
+            { $project: { _id: 1, name: 1, email: 1, avatarImage: 1 } }
+        ]);
+
+        res.status(200).json(randomUser);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ "message": "Server Error Encountered !" });
+    }
+})
 
 const expressServer = app.listen(PORT, () => {
     console.log("Server is Running on Port ", PORT);

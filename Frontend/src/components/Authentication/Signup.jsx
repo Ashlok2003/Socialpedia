@@ -26,6 +26,7 @@ const Signup = () => {
                 const avatarsImage = response.data.images.map((x) => `http://localhost:3000/uploads/avatars/${x}`);
                 setAvatars(avatarsImage);
                 setSelectedAvatar(avatarsImage[0]);
+                navigate('/login');
             } catch (error) {
                 console.log(error);
             }
@@ -38,7 +39,7 @@ const Signup = () => {
     const createUser = async (data) => {
 
         try {
-            const response = await axios.post('http://localhost:3000/users/register', data);
+            const response = await axios.post('http://localhost:3000/users/register', { ...data, avatarImage: selectedAvatar });
             console.log(response.data);
             reset();
 

@@ -15,11 +15,12 @@ function Home() {
 
     return (
         <Container fluid>
-            <Header />
+            
             <Row className='d-flex justify-content-between'>
 
                 <Col lg={3} className='d-none d-lg-block border' style={{ maxHeight: '100vh' }}>
                     <img src='https://i.ibb.co/vBp82k4/4491.jpg' className='img-fluid' />
+                    <h6 className='mb-2 fw-bolder text-center'>Please Maintain Guildelines 😎</h6>
                 </Col>
 
                 <Col lg={6} sm={12} className=''>
@@ -40,7 +41,7 @@ function Home() {
                 <Col lg={3} className='border d-none d-lg-block' style={{ maxHeight: '100vh' }}>
                     <Suggestions />
                     <img src='https://i.ibb.co/F30b0PT/3532041.jpg' className='img-fluid' />
-                    <div className='text-center' style={{marginTop: '-30px'}}>
+                    <div className='text-center' style={{ marginTop: '-30px' }}>
                         <Button variant='dark' className='fw-bolder rounded-0 fs-4'><i className="fa-brands fa-github"></i> SocialPedia</Button>
                     </div>
                 </Col>

@@ -3,7 +3,10 @@ import React from 'react'
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive';
 
-const FollowData = ({ value, setValue, data = null }) => {
+const FollowData = ({ value, setValue, followData = {} }) => {
+
+    const { text, data } = followData;
+    console.log(data);
 
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
@@ -14,7 +17,7 @@ const FollowData = ({ value, setValue, data = null }) => {
         width: isMobile ? '100%' : '29%',
         height: isMobile ? '80%' : '100%',
         zIndex: 1000,
-        backgroundColor: '#fff', 
+        backgroundColor: '#fff',
         transform: value ? 'translateY(0)' : 'translateY(100%)',
         transition: 'transform 0.3s ease-in-out',
     };
@@ -24,7 +27,7 @@ const FollowData = ({ value, setValue, data = null }) => {
             <Row>
                 <Col lg={6} className='d-flex align-items-center justify-content-center'>
                     <div style={offCanvasStyles} className='shadow rounded-3 p-2'>
-                        <h5 className="fw-bolder text-center mt-2">Following ✌️</h5>
+                        <h5 className="fw-bolder text-center mt-2">{text} ✌️</h5>
                         <input className='border-black form-control py-3' placeholder='Search' />
 
                         <div className="mt-2">
@@ -34,10 +37,10 @@ const FollowData = ({ value, setValue, data = null }) => {
                                         style={{ cursor: 'pointer' }}
                                     >
                                         <div>
-                                            <img src={x?.imageAvatar} alt="" style={{ width: '30px' }} />
+                                            <img src={x?.avatarImage} alt="" style={{ width: '30px' }} />
                                             <span className='fw-bolder ms-3'>{x?.name}</span>
                                         </div>
-                                        <Button variant='light' className='rounded-0 me-2'>Following</Button>
+                                        <Button variant='outline-dark' className='rounded-0 me-2'>Following</Button>
                                     </Col>
                                 ))
                             }

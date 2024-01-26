@@ -1,5 +1,9 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
+body {
+    overflow-x: hidden;
+}
+
 .truncate-3-lines {
     overflow: hidden;
     display: -webkit-box;
@@ -39,8 +43,37 @@
     background: #555;
 }
 
+::-webkit-scrollbar-horizontal {
+    height: 2px;
+    /* Adjust the height of the horizontal scrollbar */
+}
+
+/* Handle for Horizontal Scrollbar */
+::-webkit-scrollbar-thumb:horizontal {
+    background: #000;
+}
+
+/* Handle on hover for Horizontal Scrollbar */
+::-webkit-scrollbar-thumb:horizontal:hover {
+    background: #000000;
+}
+
 .tooltip .arrow::before {
     display: none !important;
+}
+
+.scroll-container {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.content-container {
+    display: flex;
+    white-space: nowrap;
+    transform: translateX(0);
+    transition: transform 0.3s ease;
 }
 
 
@@ -67,4 +100,22 @@
     100% {
         transform: translateY(-100%)
     }
+}
+
+
+/* Status.css */
+.custom-carousel .carousel-control-prev-icon,
+.custom-carousel .carousel-control-next-icon {
+    background-color: black;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.custom-carousel .carousel-control-prev,
+.custom-carousel .carousel-control-next {
+    background-color: transparent;
+    /* To remove the default background color */
+    border: none;
+    color: white;
+    /* Color of the arrow icon */
 }

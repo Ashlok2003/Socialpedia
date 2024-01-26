@@ -23,7 +23,7 @@ const UserProfile = () => {
     const { currentData: userData, error, refetch } = useGetUserByIdQuery(authData._id);
 
     const { data: posts, isLoading } = useGetPostsByUserIdQuery(authData.name);
-    console.log(posts);
+    
     const navigate = useNavigate();
 
     return userData ? <Container fluid>

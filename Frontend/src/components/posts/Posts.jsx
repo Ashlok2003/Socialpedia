@@ -12,7 +12,9 @@ function Posts({ postId }) {
     const navigate = useNavigate();
 
     const data = useSelector(state => selectPostById(state, postId));
+    
     const userData = useSelector(selectCurrentUser);
+
 
     const [deletePost] = useDeletePostMutation();
     const [addLikeonPost] = useAddReactionMutation();

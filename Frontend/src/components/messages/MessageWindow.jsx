@@ -1,12 +1,13 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { Container, Row, Col, Button, Overlay, Tooltip } from 'react-bootstrap';
+import { Container, Row, Col, Button, Overlay, Tooltip, ButtonGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 import { io } from 'socket.io-client';
 import { useMediaQuery } from 'react-responsive';
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
+import { useSocket } from '../../context/SocketProvider';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -14,6 +15,8 @@ import Input from '../inputs/Input';
 import { selectCurrentUser } from '../../store/Authentication/authSlice';
 
 const MessageWindow = () => {
+
+    /*  const newSocket = useSocket(); */
 
     const navigate = useNavigate();
 
@@ -38,7 +41,14 @@ const MessageWindow = () => {
     const [userList, setUserList] = useState([]);
     const [conversationId, setConversationId] = useState(null);
 
+    const [conversationsList, setConversationsList] = useState([]);
+
     const scrollRef = useRef();
+
+
+    useEffect(() => {
+        setConversationsList(currentUser?.conversations);
+    }, [currentUser]);
 
     useEffect(() => {
         if (scrollRef.current)
@@ -70,15 +80,21 @@ const MessageWindow = () => {
 
         newSocket.on('messages', ({ conversationId, messages }) => {
             setConversationId(conversationId);
-            console.log("Messages", messages);
             setMessages(messages);
         });
+
+        newSocket.on('conversationAdded', (conversationsList) => {
+            setConversationsList(conversationsList);
+        })
+
+        newSocket.on("room:join", handleJoinVideoRoom);
 
         newSocket.on('disconnect', () => {
             console.log('Disconnected from server');
         });
 
         return () => {
+            newSocket.off("room:join", handleJoinVideoRoom);
             newSocket.disconnect();
         };
     }, [currentUser]);
@@ -92,14 +108,24 @@ const MessageWindow = () => {
     };
 
     const handleSendMessage = () => {
+
         if (message && receiverId && socket) {
             const newMessage = { senderId: currentUser?._id, receiverId, text: message };
 
+            socket.emit('addConversation', { id: currentUser._id, userId: receiverId });
             socket.emit('sendMessage', newMessage);
             setMessages((prevMessages) => [...prevMessages, { conversationId, senderId: currentUser?._id, message }]);
             setMessage('');
         }
     };
+
+    const handleJoinVideoRoom = () => {
+        socket && socket.emit("room:join", { email: currentUser.email, id: currentUser._id });
+        navigate(`/videocall/${currentUser._id}`);
+    };
+
+    const [toggleList, setToggleList] = useState(true);
+    const handleToggle = () => setToggleList(prev => !prev);
 
     return (
         <Container fluid className='mt-lg-4 mt-auto px-lg-5'>
@@ -114,7 +140,14 @@ const MessageWindow = () => {
                     </div>
                     <div className='overflow-hidden' style={{ height: '70vh' }}>
                         <div className='overflow-auto' style={{ maxHeight: '100%' }}>
-                            {userList && userList?.map((x) => (
+
+                            <ButtonGroup className='d-flex align-items-center justify-content-center'>
+                                <Button variant='light' className={`fw-bolder link-offset-2 ${toggleList ? 'text-decoration-underline' : ''}`} onClick={handleToggle}>Conversations</Button>
+                                <Button variant='light' className={`fw-bolder link-offset-2 ${toggleList ? '' : 'text-decoration-underline'}`} onClick={handleToggle}>Online</Button>
+                            </ButtonGroup>
+
+
+                            {!toggleList && userList && userList?.map((x) => (
                                 <div key={x.socketId} className='d-flex mt-2 border-bottom py-2' style={{ cursor: 'pointer' }}
                                     onClick={() => {
                                         setSelected(!selected);
@@ -131,6 +164,27 @@ const MessageWindow = () => {
                                     </div>
                                 </div>
                             ))}
+
+                            {toggleList && conversationsList && conversationsList?.map((x, i) =>
+
+                                <div key={i} className='d-flex mt-2 border-bottom py-2' style={{ cursor: 'pointer' }}
+                                    onClick={() => {
+                                        setSelected(!selected);
+                                        setSelectedUser(x);
+                                        setReceiverId(x._id);
+                                        getMessages();
+                                        setMobileComponent(!mobileComponent);
+                                    }}
+                                >
+                                    <img src={x.avatarImage} style={{ width: '60px' }} alt={`Avatar of ${x.name}`} />
+                                    <div className='ms-2'>
+                                        <h6 className='fw-bolder'>{x.name}</h6>
+                                        <h6 className='fw-bolder '>{x.email}</h6>
+                                    </div>
+                                </div>
+                            )}
+
+
                         </div>
                     </div>
                 </Col>
@@ -142,7 +196,7 @@ const MessageWindow = () => {
                                 <Button variant='light'>< img src={selectedUser?.avatarImage} style={{ width: '30px' }} /></Button>
                                 <h6 className='fw-bolder link-offset-2 mt-2 ms-3'>{selectedUser?.name}</h6>
                             </div>
-                            <Button variant='light' onClick={() => navigate('/videocall/1233')}><i className="fa-solid fa-video fs-5"></i></Button>
+                            <Button variant='light'><i className="fa-solid fa-video fs-5"></i></Button>
                         </div>
                         <div className='overflow-hidden' style={{ height: '70vh' }}>
                             <div className='overflow-auto' ref={scrollRef} style={{ maxHeight: '100%' }}>
@@ -168,7 +222,7 @@ const MessageWindow = () => {
                                 value={message}
                                 onChange={(event) => setMessage(event.target.value)}
                                 inputType='text'
-                                inputClassName='form-control py-2 rounded-5'
+                                inputClassName='form-control py-2 rounded-3 border-black'
                                 placeholder='Write Something...'
                             />
                             <Button variant='light' className='rounded-0 ms-2' onClick={handleSendMessage}>

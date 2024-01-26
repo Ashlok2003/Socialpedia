@@ -7,7 +7,7 @@ const fetchAllUsersController = require('../../controllers/Users/fetchAllUsers')
 const getUserController = require('../../controllers/Users/getUserController');
 const followData = require('../../controllers/Users/followData');
 const handleUserUpdate = require('../../controllers/Users/handleUserUpdate');
-
+const AddStatus = require('../../controllers/Users/AddStatus');
 
 router.post('/login', authController.handleLogin);
 router.get('/logout', logoutController.handleLogout);
@@ -18,4 +18,7 @@ router.get('/fetchuserbyuserid/:id', getUserController.fetchUserDetailsById);
 router.post('/handleFollowing', followData.handleFollowers);
 router.patch('/handleUserUpdate', handleUserUpdate.updateProfile);
 
+router.post('/addstatus', AddStatus.addStatus);
+router.delete('/removestatus', AddStatus.removeStatus);
+router.get('/getallstatus', AddStatus.getAllStatus);
 module.exports = router;

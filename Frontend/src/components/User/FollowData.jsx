@@ -6,7 +6,7 @@ import { useMediaQuery } from 'react-responsive';
 const FollowData = ({ value, setValue, followData = {} }) => {
 
     const { text, data } = followData;
-    console.log(data);
+    
 
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
@@ -15,7 +15,7 @@ const FollowData = ({ value, setValue, followData = {} }) => {
         bottom: '0',
         left: isMobile ? '0%' : '70%',
         width: isMobile ? '100%' : '29%',
-        height: isMobile ? '80%' : '100%',
+        height: isMobile ? '80%' : '80%',
         zIndex: 1000,
         backgroundColor: '#fff',
         transform: value ? 'translateY(0)' : 'translateY(100%)',

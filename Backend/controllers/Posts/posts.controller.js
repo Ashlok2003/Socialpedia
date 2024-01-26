@@ -38,13 +38,13 @@ const addPost = (req, res) => {
             }
         }
 
-        const { userId, postId, title, description } = req.body;
+        const { userId, postId, title, description, userImage } = req.body;
         const imageUrl = req.file.path;
 
         console.log(userId, title, description, imageUrl);
 
         try {
-            const newPost = new Post({ userId, title, postId, description, isImage: true, imagePath: imageUrl });
+            const newPost = new Post({ userId, title, postId, description, isImage: true, imagePath: imageUrl, userImage });
             await newPost.save();
             return res.sendStatus(200);
         } catch (error) {

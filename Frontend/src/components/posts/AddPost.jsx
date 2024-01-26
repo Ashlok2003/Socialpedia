@@ -6,6 +6,7 @@ import { useDropzone } from 'react-dropzone';
 import Input from '../inputs/Input';
 import { useSelector, useDispatch } from 'react-redux';
 // import { addNewPost } from '@/store/Posts/postSlice';
+
 import { useAddNewPostMutation } from '@/store/Posts/PostSliceRedux';
 import { selectCurrentUser } from '../../store/Authentication/authSlice';
 import { v4 as uuidv4 } from 'uuid';
@@ -68,7 +69,6 @@ const AddPost = ({ value, onClose }) => {
     }, []);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, maxFiles: 1, });
-
 
     return (
         <Modal show={show} fullscreen={true} onHide={handleClose}>

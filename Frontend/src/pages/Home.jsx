@@ -15,7 +15,7 @@ function Home() {
 
     return (
         <Container fluid>
-            
+
             <Row className='d-flex justify-content-between'>
 
                 <Col lg={3} className='d-none d-lg-block border' style={{ maxHeight: '100vh' }}>
@@ -24,9 +24,21 @@ function Home() {
                 </Col>
 
                 <Col lg={6} sm={12} className=''>
-                    {/* <Col lg={12} className=''>
+
+                    <Col lg={12} sm={12} className=''>
                         <Status />
-                    </Col> */}
+                    </Col>
+
+
+                    <div className="d-flex align-items-center justify-content-between">
+                        <hr style={{ width: '100%', color: 'black' }} />
+                        <h6 className="fw-bolder">
+                            <span className='text-danger mx-2'>Write</span>
+                            <span className='text-warning mx-2'>Share</span>
+                            <span className='text-success mx-2'>Inspire</span>
+                        </h6>
+                        <hr style={{ width: '100%', color: 'black' }} />
+                    </div>
 
                     {/* <AddNewPost /> */}
                     {

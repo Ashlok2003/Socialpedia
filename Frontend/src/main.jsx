@@ -19,7 +19,7 @@ import Login from './components/Authentication/Login.jsx';
 import Signup from './components/Authentication/Signup.jsx';
 import Profile from './pages/Profile.jsx';
 import UserPosts from './components/User/UserPosts.jsx';
-
+import { SocketProvider } from './context/SocketProvider.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,6 +37,7 @@ const router = createBrowserRouter(
         <Route path="Fullpost/:postId" element={<FullPost />} />
 
       </Route>
+
       <Route path="videocall/:room" element={<VideoCalling />} />
     </Route>
   )
@@ -45,6 +46,8 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById('root')).render(
 
   <Provider store={store}>
-    <RouterProvider router={router} />
+    <SocketProvider>
+      <RouterProvider router={router} />
+    </SocketProvider>
   </Provider>
 )

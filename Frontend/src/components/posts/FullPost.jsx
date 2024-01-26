@@ -53,7 +53,7 @@ const FullPost = () => {
         <Container fluid className='d-flex align-items-center justify-content-between p-4'>
             <Row >
                 <Col lg={6}>
-                    <Container className='mt-1 border'>
+                    <Container fluid className='mt-1 border'>
                         <Row>
                             <Col lg={12} className='d-flex align-items-center justify-content-between mt-1 border-bottom'>
                                 <Col lg={11} className='d-flex align-items-center py-2'>
@@ -89,12 +89,12 @@ const FullPost = () => {
                 </Col>
 
                 <Col lg={6}>
-                    <Container className='mt-3 mb-3 border rounded-4'>
+                    <Container fluid className='mt-1 mb-3 border rounded-4'>
                         <Row>
                             <Col lg={12} className='py-2 border-bottom'>
                                 <h6 className='fw-bolder text-decoration-underline link-offset-2'>Comments</h6>
                             </Col>
-                            <Col lg={12} style={{ minHeight: "70vh", maxHeight: "70vh" }}>
+                            <Col lg={12} style={{ minHeight: "60vh", maxHeight: "70vh" }}>
                                 {
                                     data && data?.comments?.map((x, i) =>
                                         <div key={i} className={`d-flex align-items-center ${x?.user === userData?.name ? 'justify-content-end ' : 'justify-content-start'}`}>

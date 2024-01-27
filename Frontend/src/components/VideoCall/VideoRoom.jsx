@@ -3,14 +3,15 @@ import React, { useState, useEffect } from 'react'
 import AgoraRTC from 'agora-rtc-sdk-ng';
 import VideoPlayer from './VideoPlayer';
 import { Button } from 'react-bootstrap';
+import configuration from '../../config/configuration';
 
-const APP_ID = '2cb5d88e1860466aa2c0dc5267fe9daa';
-const TOKEN = '007eJxTYPAP6TMOd+eeKX7Zhj8616m8MVT9Qibr1esqzBmcf0+uY1ZgMEpOMk2xsEg1tDAzMDEzS0w0SjZISTY1MjNPS7VMSUzUL9mS2hDIyOC95iwrIwMEgvjcDMH5yZmJOQWpKZmJDAwAEZofSQ==';
-const CHANNEL = 'Socialpedia';
+const APP_ID = configuration.APP_ID;
+const TOKEN = configuration.TOKEN;
+const CHANNEL = configuration.CHANNEL
 
 const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
 
-const VideoRoom = ({ socket , setJoined}) => {
+const VideoRoom = ({ socket, setJoined }) => {
 
     const [users, setUsers] = useState([]);
     const [localTracks, setLocalTracks] = useState([]);

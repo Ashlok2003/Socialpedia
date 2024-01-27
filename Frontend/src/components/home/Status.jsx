@@ -48,8 +48,11 @@ const Status = () => {
 
     const handleClose = () => setShowStatus(false);
 
+    console.log(currentStatus);
+
 
     const StatusCarousel = () => (
+        
         <Carousel className="custom-carousel">
             {currentStatus && currentStatus?.map((button, index) => (
                 <Carousel.Item key={index}>
@@ -107,6 +110,8 @@ const Status = () => {
         try {
             const response = await axios.get(`${BASE_URL}/users/getallstatus`);
             setAllStatus(response.data);
+
+            console.log(response.data);
             
         } catch (error) {
             console.log(error);

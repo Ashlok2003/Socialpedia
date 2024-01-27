@@ -5,10 +5,13 @@ const fs = require('fs').promises;
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, 'uploads/status/');
+        const destinationPath = path.join('uploads', 'status');
+        callback(null, destinationPath);
     },
     filename: (req, file, callback) => {
-        callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+        const extname = path.extname(file.originalname);
+        const filename = file.fieldname + '-' + Date.now() + extname;
+        callback(null, filename);
     },
 });
 

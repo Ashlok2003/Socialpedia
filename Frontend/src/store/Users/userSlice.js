@@ -1,6 +1,7 @@
 /* eslint-disable no-useless-catch */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import configuration from '../../config/configuration';
 
 const initialState = {
     currentUser: null,
@@ -9,8 +10,8 @@ const initialState = {
 
     errors: null
 }
-
-const USERS_URL = 'http://localhost:3000/users';
+const BASE_URL = configuration.SERVER_URL;
+const USERS_URL = `${BASE_URL}/users`;
 
 export const registerUser = createAsyncThunk('/user/registerUser', async (userData) => {
     try {
@@ -42,9 +43,9 @@ export const userSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(registerUser.fulfilled, (state, action) => {
-               
+
             })
-            
+
     }
 });
 

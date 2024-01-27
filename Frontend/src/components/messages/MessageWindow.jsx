@@ -1,3 +1,6 @@
+import configuration from '../../config/configuration';
+const BASE_URL = configuration.SERVER_URL;
+
 import { useRef, useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { Container, Row, Col, Button, Overlay, Tooltip, ButtonGroup, Modal } from 'react-bootstrap';
@@ -57,7 +60,7 @@ const MessageWindow = () => {
     }, [messages]);
 
     useEffect(() => {
-        const newSocket = io('http://localhost:3000');
+        const newSocket = io(BASE_URL);
 
         newSocket.on('connect', () => {
             console.log('Connected To Server');

@@ -7,12 +7,13 @@ import { selectPostById, useDeletePostMutation, useAddReactionMutation } from '@
 import { useNavigate } from 'react-router-dom';
 import { selectCurrentUser } from '../../store/Authentication/authSlice';
 
+
 function Posts({ postId }) {
 
     const navigate = useNavigate();
 
     const data = useSelector(state => selectPostById(state, postId));
-    
+
     const userData = useSelector(selectCurrentUser);
 
 

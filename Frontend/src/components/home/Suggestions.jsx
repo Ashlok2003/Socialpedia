@@ -22,7 +22,6 @@ const Suggestions = () => {
         getSuggestions();
     }, [refresh]);
 
-    console.log(response);
 
     return (
         <Container className='p-3 rounded-3'>

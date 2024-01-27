@@ -3,12 +3,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { logOut, setCredentials } from "./authSlice";
 
+import configuration from "../../config/configuration";
+const BASE_URL = configuration.SERVER_URL;
+
 //* This unit is responsible for login & Refreshing Token functionality... :)
 
 const baseQuery = fetchBaseQuery({
 
 
-  baseUrl: 'http://localhost:3000/users',
+  baseUrl: `${BASE_URL}/users`,
   credentials: 'include',
 
   prepareHeaders: (headers, { getState }) => {

@@ -8,7 +8,7 @@ import { useLoginMutation } from '@/store/Authentication/authApiSlice';
 import { setCredentials } from '@/store/Authentication/authSlice';
 import { store } from '../../store/store';
 import { extendedApiSlice } from '../../store/Posts/PostSliceRedux';
-
+import toast, { Toaster } from 'react-hot-toast';
 
 const Login = () => {
 
@@ -29,12 +29,25 @@ const Login = () => {
             reset();
             navigate('/home');
         } catch (error) {
+            if (error) {
+                toast('Check Your Credentials !',
+                    {
+                        icon: '👏',
+                        style: {
+                            borderRadius: '10px',
+                            background: '#333',
+                            color: '#fff',
+                        },
+                    }
+                );
+            }
             console.log(error);
         }
     }
 
     return (
         <Container>
+            <Toaster position='top-right' />
             <Row className='d-flex align-items-center justify-content-center mt-5'>
                 <Col lg={5} >
                     <Form onSubmit={handleSubmit(connectUser)} className='vh-100'>
@@ -69,7 +82,7 @@ const Login = () => {
                                         }
                                     }
                                 })} />
-                                <Form.Text> Please Enter You all Mighty Secure Password</Form.Text>
+                            <Form.Text> Please Enter You all Mighty Secure Password</Form.Text>
 
                             {errors.password && <p className='text-danger'>Password is required</p>}
                         </Form.Group>

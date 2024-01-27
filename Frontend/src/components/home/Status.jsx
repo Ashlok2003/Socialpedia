@@ -12,8 +12,11 @@ import Input from '../inputs/Input';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import configuration from '../../config/configuration';
 
 const Status = () => {
+
+    const BASE_URL = configuration.SERVER_URL;
 
     const [selected, setSelected] = useState(null);
     const [image, setImage] = useState(null);
@@ -50,7 +53,7 @@ const Status = () => {
         <Carousel className="custom-carousel">
             {currentStatus && currentStatus?.map((button, index) => (
                 <Carousel.Item key={index}>
-                    <img src={`http://localhost:3000/${button.imageUrl}`} className='' style={{ height: '100%', width: '100%' }} alt={`Status ${index + 1}`} />
+                    <img src={`${BASE_URL}/${button.imageUrl}`} className='' style={{ height: '100%', width: '100%' }} alt={`Status ${index + 1}`} />
                     <Carousel.Caption>
                         <h3 className='bg-dark rounded-5 py-2 text-white'>{button.text} </h3>
                     </Carousel.Caption>
@@ -70,7 +73,7 @@ const Status = () => {
             formData.append('name', currentUser?.name);
             formData.append('email', currentUser?.email);
 
-            await axios.post('http://localhost:3000/users/addstatus', formData, {
+            await axios.post(`${BASE_URL}/users/addstatus`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
 
@@ -102,8 +105,9 @@ const Status = () => {
 
     const getStatus = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/users/getallstatus`);
+            const response = await axios.get(`${BASE_URL}/users/getallstatus`);
             setAllStatus(response.data);
+            
         } catch (error) {
             console.log(error);
         }

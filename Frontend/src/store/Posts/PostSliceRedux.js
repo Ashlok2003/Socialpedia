@@ -2,6 +2,9 @@
 
 import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
 import { apiSlice } from "./apiSlice";
+import configuration from "../../config/configuration";
+
+const BASE_URL = configuration.SERVER_URL;
 
 const postsAdapter = createEntityAdapter({
 	sortComparer: (a, b) => b.createdAt.localeCompare(a.createdAt),
@@ -19,7 +22,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 			transformResponse: (responseData) => {
 				const postsData = responseData.map((post) => ({
 					...post,
-					imagePath: `http://localhost:3000/${post.imagePath}`,
+					imagePath: `${BASE_URL}/${post.imagePath}`,
 				}));
 
 				const normalisedData = postsAdapter.setAll(
@@ -52,7 +55,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 			query: (userId) => `/post/getalluserposts/${userId}`,
 
 			transformResponse: (responseData) => {
-				const postUpdated = responseData.map((x) => ({ ...x, imagePath: `http://localhost:3000/${x.imagePath}` }));
+				const postUpdated = responseData.map((x) => ({ ...x, imagePath: `${BASE_URL}/${x.imagePath}` }));
 				return postUpdated;
 			},
 

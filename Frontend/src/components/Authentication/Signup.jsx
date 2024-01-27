@@ -4,11 +4,14 @@ import { useForm } from 'react-hook-form';
 import Input from '../inputs/Input';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import configuration from '../../config/configuration';
 
 import axios from 'axios';
 import { Buffer } from 'buffer';
 
 const Signup = () => {
+
+    const BASE_URL = configuration.SERVER_URL;
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -22,11 +25,11 @@ const Signup = () => {
     useEffect(() => {
         const fetchAvatars = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/avatarImages`);
-                const avatarsImage = response.data.images.map((x) => `http://localhost:3000/uploads/avatars/${x}`);
+                const response = await axios.get(`${BASE_URL}/avatarImages`);
+                const avatarsImage = response.data.images.map((x) => `${BASE_URL}/uploads/avatars/${x}`);
                 setAvatars(avatarsImage);
                 setSelectedAvatar(avatarsImage[0]);
-                
+
             } catch (error) {
                 console.log(error);
             }
@@ -39,7 +42,7 @@ const Signup = () => {
     const createUser = async (data) => {
 
         try {
-            const response = await axios.post('http://localhost:3000/users/register', { ...data, avatarImage: selectedAvatar });
+            const response = await axios.post(`${BASE_URL}/users/register`, { ...data, avatarImage: selectedAvatar });
             console.log(response.data);
             reset();
             navigate('/login');

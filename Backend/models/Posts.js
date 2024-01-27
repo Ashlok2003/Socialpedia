@@ -38,6 +38,7 @@ const postSchema = new mongoose.Schema({
     comments: [{
         user: { type: String, required: true },
         text: { type: String, required: true },
+        userImage: { type: String, require: true },
         createdAt: { type: Date, default: Date.now }
     }],
 

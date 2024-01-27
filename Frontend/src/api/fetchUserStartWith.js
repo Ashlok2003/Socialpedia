@@ -1,9 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
 import axios from 'axios';
+import configuration from '../config/configuration';
+const SERVER_URL = configuration.SERVER_URL;
 
 const fetchUserStartWith = async (name) => {
-    
-    const BASE_URL = `http://localhost:3000/fetchUserStartWith/${name}?page=1`;
+
+    const BASE_URL = `${SERVER_URL}/fetchUserStartWith/${name}?page=1`;
 
     const axiosInstance = axios.create({
         baseURL: BASE_URL,
@@ -16,7 +18,7 @@ const fetchUserStartWith = async (name) => {
 
     try {
         const response = await axiosInstance.get();
-        
+
         return response.data;
 
     } catch (error) {

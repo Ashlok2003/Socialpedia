@@ -40,7 +40,7 @@ const SearchProfile = () => {
         }
     }
 
-    return isLoading ? <div>Loading....</div>
+    return isLoading ? <div className='d-flex align-items-center'><div className='loader'></div></div>
         :
         <>
             <Container fluid>

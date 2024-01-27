@@ -9,6 +9,8 @@ const User = require("./models/User");
 const PORT = process.env.PORT || 8000;
 const fs = require('fs').promises;
 const path = require('path');
+const cron = require('node-cron');
+const Status = require('./models/Status');
 
 app.use(express.json());
 app.use(cookieParser());
@@ -119,3 +121,33 @@ const expressServer = app.listen(PORT, () => {
 });
 
 require("./services/messaging")(expressServer);
+
+
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', () => {
+
+    console.log('Connected to MongoDB');
+
+    cron.schedule('0 0 * * *', async () => {
+        try {
+            await Status.deleteMany({});
+
+            const StatusFolder = path.join(__dirname, 'uploads', 'status');
+
+            const files = await fs.readdir(StatusFolder);
+
+            for (const file of files) {
+                const filePath = path.join(StatusFolder, file);
+                await fs.unlink(filePath);
+            }
+
+            console.log("Status Images Deleted");
+        }
+
+        catch (error) {
+            console.error('Error deleting images:', error.message);
+        }
+    })
+})

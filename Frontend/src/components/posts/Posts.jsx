@@ -47,7 +47,7 @@ function Posts({ postId }) {
             <Row>
                 <Col lg={12} className='d-flex align-items-center justify-content-between mt-1 border-bottom'>
                     <Col lg={11} className='d-flex align-items-center py-2'
-
+                       
                     >
 
                         <img src={data?.userImage} alt="" style={{ width: '30px' }} />

@@ -9,6 +9,7 @@ const Search = () => {
     const [searchValue, setSearchValue] = React.useState('');
 
     const debouncedSearchValue = useDebounce(searchValue, 1000);
+    
 
     return (
         <>

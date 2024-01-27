@@ -12,12 +12,13 @@ const ListUser = ({ searchTerm }) => {
 
     const { isLoading, error, data } = useSWR(searchTerm ? searchTerm : null, fetchUser);
 
-
+    console.log(error);
 
     return (
         <>
             {isLoading && <h1 className="loader text-center"></h1>}
-            {!isLoading && error && <p>{error.message}</p>}
+            {!isLoading && error && error.request.status === 404 && <h3 className='fw-bolder'>No Such User Exists !</h3>}
+            {!isLoading && error && error.request.status !== 404 && <p>{error.message}</p>}
             {!isLoading && !error && data && data.map((x, i) => (
 
                 <div key={i} className='d-flex align-items-center justify-content-between p-2 border mt-2'
@@ -30,7 +31,7 @@ const ListUser = ({ searchTerm }) => {
                             <h6 className='fw-bolder'>{x.email}</h6>
                         </div>
                     </div>
-                    
+
 
                 </div>
             ))}

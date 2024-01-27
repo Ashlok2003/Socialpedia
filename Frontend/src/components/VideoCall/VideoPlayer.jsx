@@ -13,7 +13,7 @@ const VideoPlayer = ({ user }) => {
 
     return (
         <>
-            <div ref={ref} style={{ width: '100%', height: '100%' }}>
+            <div ref={ref} className='mt-2' style={{ width: '100%', height: '90%' }}>
             </div>
         </>
     )

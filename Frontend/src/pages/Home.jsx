@@ -54,7 +54,9 @@ function Home() {
                     <Suggestions />
                     <img src='https://i.ibb.co/F30b0PT/3532041.jpg' className='img-fluid' />
                     <div className='text-center' style={{ marginTop: '-30px' }}>
-                        <Button variant='dark' className='fw-bolder rounded-0 fs-4'><i className="fa-brands fa-github"></i> SocialPedia</Button>
+                        <a href='https://github.com/Ashlok2003/Socialpedia'>
+                            <Button variant='dark' className='fw-bolder rounded-0 fs-4'><i className="fa-brands fa-github"></i> SocialPedia</Button>
+                        </a>
                     </div>
                 </Col>
 

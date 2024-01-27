@@ -52,7 +52,7 @@ const Status = () => {
 
 
     const StatusCarousel = () => (
-        
+
         <Carousel className="custom-carousel">
             {currentStatus && currentStatus?.map((button, index) => (
                 <Carousel.Item key={index}>
@@ -109,10 +109,9 @@ const Status = () => {
     const getStatus = async () => {
         try {
             const response = await axios.get(`${BASE_URL}/users/getallstatus`);
-            setAllStatus(response.data);
+            const data = response.data.reverse();
+            setAllStatus(data);
 
-            console.log(response.data);
-            
         } catch (error) {
             console.log(error);
         }

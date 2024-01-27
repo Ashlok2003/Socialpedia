@@ -2,6 +2,7 @@
 const path = require('path');
 const multer = require('multer');
 const Post = require('../../models/Posts');
+const fs = require('fs').promises;
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
@@ -76,6 +77,17 @@ const updatePost = async (req, res) => {
 const deletePost = async (req, res) => {
     try {
         const postId = req.params.id;
+
+        const post = await Post.findOne({ postId });
+
+        if (!post)
+            return res.status(404).json({ message: "Post Not Found !" });
+
+        if (post.isImage) {
+            const imagePath = path.join(__dirname, post.imagePath);
+            await fs.unlink(imagePath);
+        }
+
         const deleted = await Post.findOneAndDelete({ postId });
 
         if (!deleted)

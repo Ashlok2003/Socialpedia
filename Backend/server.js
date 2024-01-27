@@ -24,6 +24,7 @@ app.use(
                 "https://d5vml3-5173.csb.app",
                 "https://d5vml3-8000.csb.app",
                 "http://other-allowed-origin",
+                "https://socialpedia-tau.vercel.app",
             ];
 
             if (!origin || allowedOrigins.indexOf(origin) !== -1)

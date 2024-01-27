@@ -2,14 +2,13 @@ const { Server } = require('socket.io');
 const User = require('../models/User');
 const Conversation = require('../models/Conversations');
 const Message = require('../models/Messages');
-
-const emailToSocketIdMap = new Map();
-const socketIdToEmailMap = new Map();
-
+const { v4: uuidv4 } = require('uuid');
 
 const socket = (expressServer) => {
 
     let users = [];
+
+    const roomTokens = {};
 
     const io = new Server(expressServer, {
         cors: {
@@ -18,10 +17,10 @@ const socket = (expressServer) => {
     });
 
     io.on('connection', socket => {
-       
+
 
         socket.on('addUser', async (userId) => {
-            
+
 
             const isuserexists = users.find((user) => user.userId === userId.userID);
 
@@ -40,14 +39,14 @@ const socket = (expressServer) => {
                 const userData = await User.findOne({ _id: userId });
 
                 const conversationExists = currentUser.conversations.find((conversation) => conversation._id === userId);
-                
+
                 if (!conversationExists) {
                     currentUser.conversations.push({ _id: userId, name: userData.name, email: userData.email, avatarImage: userData.avatarImage });
                     await currentUser.save();
                 }
 
                 const otheruserConversationExists = userData.conversations.find((conversation) => conversation._id === id);
-                
+
                 if (!otheruserConversationExists) {
                     userData.conversations.push({ _id: id, name: currentUser.name, email: currentUser.email, avatarImage: currentUser.avatarImage });
                     await userData.save();
@@ -59,8 +58,6 @@ const socket = (expressServer) => {
                 console.log(error);
             }
         })
-
-
 
         socket.on('sendMessage', async ({ senderId, receiverId, text }) => {
 
@@ -94,9 +91,6 @@ const socket = (expressServer) => {
                 members: { $all: [senderId, receiverId] }
             });
 
-            console.log(conversation);
-
-
             if (conversation) {
                 const messages = await Message.find({ conversationId: conversation._id });
                 //! Emitting the message to the requested client only
@@ -117,41 +111,15 @@ const socket = (expressServer) => {
 
         });
 
-
         //* Video calling socket integration starts here.............................
 
-        socket.on('room:join', (data) => {
-            const { email, room } = data;
+        socket.on('calling', async ({ callerId, receiverId, callername, callerImage }) => {
 
-            console.log("Room Joined !");
-
-            emailToSocketIdMap.set(email, socket.id);
-            socketIdToEmailMap.set(socket.id, email);
-
-            io.to(room).emit('user:joined', { email, id: socket.id });
-            socket.join(room);
-
-            io.to(socket.id).emit('room:join', data);
+            io.to(receiverId).emit('incomingcall', { callerId, callername, callerImage });
         });
 
-        socket.on('user:call', ({ to, offer }) => {
-            io.to(to).emit("incoming:call", {
-                from: socket.id, offer
-            });
-        });
-
-        socket.on("call:accepted", ({ to, ans }) => {
-            io.to(to).emit("call:accepted", {
-                from: socket.id, ans
-            });
-        });
-
-        socket.on("peer:nego:needed", ({ to, offer }) => {
-            io.to(to).emit('peer:nego:needed', { from: socket.id, offer });
-        });
-
-        socket.on("peer:nego:done", ({ to, ans }) => {
-            io.to(to).emit('peer:nego:final', { from: socket.id, ans });
+        socket.on('endcall', ({ receiverId }) => {
+            io.to(receiverId).emit('endcall');
         });
 
         //*------------------------------------------------------------------------
@@ -160,13 +128,15 @@ const socket = (expressServer) => {
             //! Remove the user from the users array....
 
             const user = users.find((user) => user.userId === userId);
+
             if (user) {
                 users = users.filter((user) => user.userId !== userId);
                 io.emit('userList', users.map((user) => user.userId));
 
                 console.log(`${socket.id} disconnected`);
             }
-        })
+
+        });
 
     });
 }

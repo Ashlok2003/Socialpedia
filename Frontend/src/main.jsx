@@ -13,13 +13,13 @@ import SearchProfile from './components/User/SearchProfile.jsx';
 import Explore from './pages/Explore.jsx';
 import FullPost from './components/posts/FullPost.jsx';
 import Welcome from './pages/Welcome.jsx';
-import VideoCalling from './components/VideoCall/VideoCalling.jsx';
+
 import RequireAuth from './components/User/RequireAuth.jsx';
 import Login from './components/Authentication/Login.jsx';
 import Signup from './components/Authentication/Signup.jsx';
 import Profile from './pages/Profile.jsx';
 import UserPosts from './components/User/UserPosts.jsx';
-import { SocketProvider } from './context/SocketProvider.jsx';
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -38,7 +38,6 @@ const router = createBrowserRouter(
 
       </Route>
 
-      <Route path="videocall/:room" element={<VideoCalling />} />
     </Route>
   )
 )
@@ -46,8 +45,8 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById('root')).render(
 
   <Provider store={store}>
-    <SocketProvider>
-      <RouterProvider router={router} />
-    </SocketProvider>
+
+    <RouterProvider router={router} />
+
   </Provider>
 )

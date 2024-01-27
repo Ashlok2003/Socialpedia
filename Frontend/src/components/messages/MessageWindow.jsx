@@ -1,16 +1,16 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { Container, Row, Col, Button, Overlay, Tooltip, ButtonGroup } from 'react-bootstrap';
+import { Container, Row, Col, Button, Overlay, Tooltip, ButtonGroup, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 import { io } from 'socket.io-client';
 import { useMediaQuery } from 'react-responsive';
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
-import { useSocket } from '../../context/SocketProvider';
-
+import toast, { Toaster } from 'react-hot-toast';
+import VideoNotification from '../VideoCall/VideoNotification';
 import { useNavigate } from 'react-router-dom';
-
+import VideoRoom from '../VideoCall/VideoRoom';
 import Input from '../inputs/Input';
 import { selectCurrentUser } from '../../store/Authentication/authSlice';
 
@@ -40,11 +40,12 @@ const MessageWindow = () => {
     const [messages, setMessages] = useState([]);
     const [userList, setUserList] = useState([]);
     const [conversationId, setConversationId] = useState(null);
+    const [receiverSocketId, setReceiverSocketId] = useState(null);
 
     const [conversationsList, setConversationsList] = useState([]);
+    const [joined, setJoined] = useState(false);
 
     const scrollRef = useRef();
-
 
     useEffect(() => {
         setConversationsList(currentUser?.conversations);
@@ -87,14 +88,24 @@ const MessageWindow = () => {
             setConversationsList(conversationsList);
         })
 
-        newSocket.on("room:join", handleJoinVideoRoom);
+        newSocket.on("incomingcall", ({ callerId, callername, callerImage }) => {
+            console.log(callerId, callername, callerImage)
+            toast((t) => (
+                <VideoNotification userId={callerId} username={callername} userImage={callerImage} toast={t}
+                    videoCall={setJoined}
+                />
+            ), { duration: 5000 });
+        });
+
+        newSocket.on('endcall', () => {
+            setJoined(false);
+        });
 
         newSocket.on('disconnect', () => {
             console.log('Disconnected from server');
         });
 
         return () => {
-            newSocket.off("room:join", handleJoinVideoRoom);
             newSocket.disconnect();
         };
     }, [currentUser]);
@@ -119,9 +130,16 @@ const MessageWindow = () => {
         }
     };
 
+
+
     const handleJoinVideoRoom = () => {
-        socket && socket.emit("room:join", { email: currentUser.email, id: currentUser._id });
-        navigate(`/videocall/${currentUser._id}`);
+        socket.emit('calling', {
+            callerId: currentUser._id, receiverId: receiverSocketId,
+            callername: currentUser.name, callerImage: currentUser.avatarImage
+        });
+        console.log(currentUser._id, receiverSocketId);
+
+        setJoined(true);
     };
 
     const [toggleList, setToggleList] = useState(true);
@@ -129,6 +147,7 @@ const MessageWindow = () => {
 
     return (
         <Container fluid className='mt-lg-4 mt-auto px-lg-5'>
+            <Toaster position="top-right" />
             <Row className='d-flex justify-content-between border-bottom'>
                 <Col className='border rounded-3' lg={3} style={{ display: isMobile && selected && mobileComponent ? 'none' : 'block' }}>
                     <div className='py-2 border-bottom text-center'>
@@ -153,6 +172,7 @@ const MessageWindow = () => {
                                         setSelected(!selected);
                                         setSelectedUser(x.userData);
                                         setReceiverId(x.userData._id);
+                                        setReceiverSocketId(x.socketId);
                                         getMessages();
                                         setMobileComponent(!mobileComponent);
                                     }}
@@ -196,7 +216,7 @@ const MessageWindow = () => {
                                 <Button variant='light'>< img src={selectedUser?.avatarImage} style={{ width: '30px' }} /></Button>
                                 <h6 className='fw-bolder link-offset-2 mt-2 ms-3'>{selectedUser?.name}</h6>
                             </div>
-                            <Button variant='light'><i className="fa-solid fa-video fs-5"></i></Button>
+                            <Button variant='light' onClick={handleJoinVideoRoom}><i className="fa-solid fa-video fs-5"></i></Button>
                         </div>
                         <div className='overflow-hidden' style={{ height: '70vh' }}>
                             <div className='overflow-auto' ref={scrollRef} style={{ maxHeight: '100%' }}>
@@ -244,6 +264,30 @@ const MessageWindow = () => {
                     conduct and content shared within the platform, respecting others rights and refraining from abusive or
                     offensive behavior.
                 </p>
+            </Row>
+
+            <Row>
+                {joined &&
+                    <Modal show={joined} fullscreen={true} onHide={() => {
+                        setJoined(false);
+                        socket.emit('endcall', { receiverId: receiverSocketId });
+                    }}>
+                        <Modal.Header>
+                            <Modal.Title className='d-flex align-items-center'>
+                                <h6 className='fw-bolder'>Powered by</h6>
+                                <img
+                                    src="https://i.ibb.co/Rc3zJKt/Screenshot-2024-01-08-202059.png"
+                                    style={{ height: '20px', cursor: 'pointer' }}
+                                    className="d-inline-block align-top ms-2"
+                                    alt="Your Logo"
+                                />
+                            </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <VideoRoom socket={socket} setJoined={setJoined} />
+                        </Modal.Body>
+                    </Modal>
+                }
             </Row>
         </Container>
     );

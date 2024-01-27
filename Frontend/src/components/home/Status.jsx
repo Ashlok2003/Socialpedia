@@ -135,7 +135,7 @@ const Status = () => {
                     <Modal.Header closeButton className=''>
                         <Modal.Title className='d-flex align-items-center'>
                             <img src={allStatus[selected]?.avatarImage} alt="" style={{ height: '60px' }} />
-                            <div className='d-flex flex-column'>
+                            <div className='d-flex flex-column ms-2'>
                                 <h6 className='fw-bolder'>{allStatus[selected]?.name}</h6>
                                 <h6 className='fw-bolder'>{allStatus[selected]?.email}</h6>
                             </div>

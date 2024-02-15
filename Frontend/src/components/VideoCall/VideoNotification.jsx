@@ -6,8 +6,6 @@ const VideoNotification = ({ userId, username, userImage, toast, videoCall }) =>
 
     const navigate = useNavigate();
 
-    
-
     const handleAccept = () => {
         console.log("Accepted !");
         videoCall(true);

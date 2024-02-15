@@ -118,7 +118,6 @@ const Signup = () => {
                                     {...register('password', {
                                         required: true, validate: {
                                             matchPattern: (value) => {
-
                                                 return value.length > 8 || 'Invalid Password';
                                             }
                                         }

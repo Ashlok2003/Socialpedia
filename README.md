@@ -1,2 +1,2 @@
 # SOCIALX
-The Social Media Platform 
+The Social Media Platform for Developers

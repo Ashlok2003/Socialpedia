@@ -12,10 +12,6 @@ const path = require('path');
 const cron = require('node-cron');
 const Status = require('./models/Status');
 
-app.use(express.json());
-app.use(cookieParser());
-app.use("/uploads", express.static("uploads"));
-app.use("/public", express.static("public"));
 app.use(
     cors({
         origin: function (origin, callback) {
@@ -37,6 +33,12 @@ app.use(
         optionsSuccessStatus: 200,
     }),
 );
+
+app.use(express.json());
+app.use(cookieParser());
+app.use("/uploads", express.static("uploads"));
+app.use("/public", express.static("public"));
+
 
 app.use(express.urlencoded({ extended: false }));
 
